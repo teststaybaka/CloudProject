@@ -14,10 +14,11 @@ http://localhost:8080
 ### Local app engine admin console:
 http://localhost:8000  
 
-### Remote deploy: 
+### Remote deploy:
 appcfg.py update CloudProject  
+Note: CloudProject here is the folder name of your local copy of the codes. So execute the command just outside the folder.  
 
-### Remove index: 
+### Remove index:
 appcfg.py vacuum_indexes CloudProject  
 
 ### Prerequisites:

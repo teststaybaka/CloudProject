@@ -8,6 +8,7 @@ http://hands-for-you.appspot.com/
 ### Local start:
 dev_appserver.py CloudProject  
 Note: CloudProject here is the folder name of your local copy of the codes. So execute the command just outside the folder.  
+Also, you don't need to restart the local server when you make changes to files. Simply refresh the page will reload the code.
 
 ### Local url:
 http://localhost:8080  

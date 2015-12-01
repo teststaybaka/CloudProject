@@ -32,7 +32,7 @@ class User(ndb.Model):
   phone = ndb.StringProperty()
 
   @classmethod
-  def Create(firstname, lastname, gender, email, raw_password, phone):
+  def Create(cls, lastname, firstname, gender, email, raw_password, phone):
     uniques = ['%s.%s:%s' % (cls.__name__, 'auth_id', email)]
     ok, existing = Unique.create_multi(uniques)
     if ok:

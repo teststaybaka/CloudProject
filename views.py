@@ -1,5 +1,4 @@
 import jinja2
-import logging
 import os
 import traceback
 import webapp2
@@ -7,13 +6,8 @@ import cStringIO
 import itertools
 import mimetools
 import mimetypes
-import urllib2
-import urllib
 import random
 import cgi
-import json
-import re
-import math
 import collections
 import base64
 
@@ -56,6 +50,9 @@ class BaseHandler(webapp2.RequestHandler):
             return None
 
     def render(self, tempname, context=None):
+        if not context:
+            context = {}
+
         self.response.headers['Content-Type'] = 'text/html'
         path = 'template/' + tempname + '.html'
         template = env.get_template(path)
@@ -107,6 +104,14 @@ class Signup(BaseHandler):
         gender = self.request.get('gender')
         phone = self.request.get('phone')
 
+        if not firstname:
+            self.json_response(True, {'message': 'Firstname is empty.'})
+            return
+
+        if not lastname:
+            self.json_response(True, {'message': 'Lastname is empty.'})
+            return
+
         if not EMAIL_REGEX.match(email):
             self.json_response(True, {'message': 'Email format invalid.'})
             return
@@ -124,7 +129,7 @@ class Signup(BaseHandler):
             self.json_response(True, {'message': 'Create user failed.'})
             return
 
-        self.response.set_cookie('user_id', user.key.id(), path='/')
+        self.response.set_cookie('user_id', str(user.key.id()), path='/')
         self.json_response(False)
 
 class Signin(BaseHandler):
@@ -146,7 +151,7 @@ class Signin(BaseHandler):
             self.json_response(True, {'message': 'Email and password don\'t match.'})
             return
 
-        self.response.set_cookie('user_id', user.key.id(), path='/')
+        self.response.set_cookie('user_id', str(user.key.id()), path='/')
         self.json_response(False)
 
 class Signout(BaseHandler):

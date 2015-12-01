@@ -7,6 +7,7 @@ http://hands-for-you.appspot.com/
 
 ### Local start:
 dev_appserver.py CloudProject  
+Note: CloudProject here is the folder name of your local copy of the codes. So execute the command just outside the folder.  
 
 ### Local url:
 http://localhost:8080  
@@ -16,7 +17,6 @@ http://localhost:8000
 
 ### Remote deploy:
 appcfg.py update CloudProject  
-Note: CloudProject here is the folder name of your local copy of the codes. So execute the command just outside the folder.  
 
 ### Remove index:
 appcfg.py vacuum_indexes CloudProject  

@@ -1,0 +1,20 @@
+{% extends "template/base.html" %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block body %}
+<form method="POST" action="">
+    <div class="input-line">
+        <label>Email: </label>
+        <input type="text" name="email">
+    </div>
+    <div class="input-line">
+        <label>Password: </label>
+        <input type="password" name="password">
+    </div>
+    <div class="input-line">
+        <input type="submit" value="Sign in">
+    </div>
+</form>
+{% endblock %}

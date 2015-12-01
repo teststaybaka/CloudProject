@@ -30,7 +30,7 @@ urls.py which defines the mapping from url to handlers
 ### Main handlers:
 views.py which handles the response. Jinja2 template engine is used to render html files.  
 
-### Templace engine:
+### Template engine:
 [Jinja2](http://jinja.pocoo.org/docs/dev/templates/), with which base.html can be used as the base of all html files, meaning same headers/html blocks that are reused through other html files should be written in base.html. Put all template html files in /template folder.  
 
 ### Model definition:

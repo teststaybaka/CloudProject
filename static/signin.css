@@ -25,7 +25,7 @@ form input:not(:first-child){
 form input[type=submit]{
 	font-size: 13px;
 	border: 1px solid #ccc;
-    background-color: #007B7B;
+    background-color: #009B9B;
     font-weight: bold;
     color: aliceblue;
     position: absolute;
@@ -42,6 +42,7 @@ form input[type=submit]:hover{
 	position: relative;
 	margin: 0 auto;
 	top: 40%;
+	opacity: .9;
 	background: url("images/facebook.jpg") no-repeat center center;
 	background-size: contain;
 	width: 150px;
@@ -49,5 +50,5 @@ form input[type=submit]:hover{
 }
 #facebook:hover{
 	cursor: pointer;
-	opacity: .9;
+	opacity: 1;
 }

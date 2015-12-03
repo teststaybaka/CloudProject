@@ -1,20 +1,40 @@
 {% extends "template/base.html" %}
 {% block head %}
 {{ super() }}
+<link href="/static/signin.css" rel="stylesheet" type="text/css">
+<link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet' type='text/css'>
+<script src="/static/signin.js"></script>
+<script>
+window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '441962862657459',
+      xfbml      : true,
+      version    : 'v2.5'
+    });
+  };
+
+  // Load the SDK asynchronously
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
 {% endblock %}
 
 {% block body %}
 <form method="POST" action="">
     <div class="input-line">
-        <label>Email: </label>
-        <input type="text" name="email">
+        <input type="text" name="email" placeholder="Email" size="30">
     </div>
     <div class="input-line">
-        <label>Password: </label>
-        <input type="password" name="password">
+        <input type="password" name="password" placeholder="Password" size="30">
     </div>
     <div class="input-line">
         <input type="submit" value="Sign in">
     </div>
 </form>
+<div id="facebook"></div>
 {% endblock %}

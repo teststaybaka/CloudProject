@@ -1,0 +1,53 @@
+html, body{
+	height: 100%;
+}
+form{
+	position: relative;
+	margin: 0 auto;
+	width: 280px;
+	border-bottom: 1px solid #ddd;
+	top: 35%;
+	padding: 5px;
+	font-size: 15px;
+}
+form input{
+	font-size: 15px;
+	font-family: 'Quicksand', sans-serif;
+	color: #009B9B;
+	margin-top: 5px;
+}
+form input[type=text]:focus, input[type=password]:focus{
+	outline-color: #008B8B;
+}
+form input:not(:first-child){
+	margin-top: 15px;
+}
+form input[type=submit]{
+	font-size: 13px;
+	border: 1px solid #ccc;
+    background-color: #007B7B;
+    font-weight: bold;
+    color: aliceblue;
+    position: absolute;
+    margin-top: 15px;
+    margin-left: 65px;
+    width: 150px;
+    border-radius: 5px 5px;
+}
+form input[type=submit]:hover{
+	cursor: pointer;
+	background-color: #008B8B;
+}
+#facebook{
+	position: relative;
+	margin: 0 auto;
+	top: 40%;
+	background: url("images/facebook.jpg") no-repeat center center;
+	background-size: contain;
+	width: 150px;
+	height: 40px;
+}
+#facebook:hover{
+	cursor: pointer;
+	opacity: .9;
+}

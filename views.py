@@ -84,7 +84,7 @@ def login_required_json(handler):
 class Home(BaseHandler):
     def get(self):
         services = Service.query().fetch()
-        self.render('home', {'services': services})
+        self.render('index', {'services': services})
 
 class Signinup(BaseHandler):
     def get(self):

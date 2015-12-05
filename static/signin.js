@@ -1,72 +1,49 @@
 $(document).ready(function(){
-		$("#facebook-login").click(function(){
-			if(checkLoginState() === "connected")
-				return;
-			FB.login(function(response) {
-  				if (response.status === 'connected') {
-    			// Logged into your app and Facebook.
-    			var auth_id, firstname, lastname, gender, email;
-    				FB.api('/me', function(response){
-    					response = JSON.parse(response);
-    					auth_id = response.id;
-    					firstname = response.first_name;
-    					lastname = response.last_name;
-    					gender = response.gender;
-    					email = response.email;
-    				});
-    			$.post("https://"+window.location.hostname+"/signin", 
-    				JSON.stringify({
-    					"fb-access-token":response.accessToken,
-    					"auth_id":auth_id,
-    					"firstname":firstname,
-    					"lastname":lastname,
-    					"gender":gender,
-    					"email":email
-    				}),
-    				function(data){
-
-    				}
-    			)
-    			//failure
-    			window.location.replace("https://"+window.location.hostname+"/signup");
-			  } else if (response.status === 'not_authorized') {
-			    // The person is logged into Facebook, but not your app.
-			    window.location.replace("https://"+window.location.hostname+"/signin");
-			  } else {
-    			// The person is not logged into Facebook, so we're not sure if
-    			// they are logged into this app or not.
-    			window.location.replace("https://"+window.location.hostname+"/signin");
-  			}
-			});
-		})
-
+	$("#facebook-login").click(function(){
+		FB.getLoginStatus(function(response){
+			if(response.status === "connected"){
+				$.post("/signin", {"fb-access-token":response.authResponse.accessToken},function(){
+					window.location.replace("/");
+				});
+			} 
+			else{
+				FB.login(function(response) {
+  				if (response.status === 'connected')
+  					sendConnectedResponse(response);
+				}, {scope: 'email'});
+			}
+		});
+	});
 });
 
+
+function sendConnectedResponse(callback){
+	var auth_id, firstname, lastname, gender, email;
+	FB.api('/me', {fields: 'first_name, last_name, gender, email'}, function(response){
+
+		auth_id = response.id;
+		firstname = response.first_name;
+		lastname = response.last_name;
+		gender = response.gender;
+		email = response.email;
+
+		$.post("/signin", 
+			{
+				"fb-access-token":callback.authResponse.accessToken,
+				"auth_id":auth_id,
+				"firstname":firstname,
+				"lastname":lastname,
+				"gender":gender,
+				"email":email
+			},
+			function(data){
+				window.location.replace("/");
+			}
+		);
+	});
+}
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
     console.log('statusChangeCallback');
     console.log(response);
-
-    window.location.replace("https://"+window.location.hostname+"/signin");
-  }
-
-  // This function is called when someone finishes with the Login
-  // Button.  See the onlogin handler attached to it in the sample
-  // code below.
-  function checkLoginState() {
-  	var status = 'unknown';
-    FB.getLoginStatus(function(response) {
-      statusChangeCallback(response);
-      status = response.status;
-    });
-    return status;
-  }
-
-  // Here we run a very simple test of the Graph API after login is
-  // successful.  See statusChangeCallback() for when this call is made.
-  function testAPI() {
-    console.log('Welcome!  Fetching your information.... ');
-    FB.api('/me', function(response) {
-      console.log('Successful login for: ' + response.name);
-    });
   }

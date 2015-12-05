@@ -54,6 +54,15 @@ class User(ndb.Model):
     else:
       return None
 
+  @classmethod
+  def get_user_with_uid(cls, uid):
+    user = cls.query(cls.uid==uid).get()
+    if user:
+      return user
+    else:
+      return None
+
+
 class Service(ndb.Model):
   creator = ndb.KeyProperty(kind='User', required=True)
   address = ndb.StringProperty(indexed=False)

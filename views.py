@@ -17,6 +17,7 @@ from jinja2 import Undefined
 from google.appengine.api.datastore_errors import BadValueError
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import mail
+from auth import fb_get_user_id
 
 from models import *
 
@@ -149,13 +150,22 @@ class Signin(BaseHandler):
             self.render('signin')
 
     def post(self):
+        user = None
+
         if self.user_key:
             self.json_response(True, {'message': 'Already sign in!'})
             return
 
-        email = self.request.get('email')
-        password = self.request.get('password')
-        user = User.get_user_with_password(email, password)
+        uid = fb_get_user_id(self.request.get('fb-access-token'))
+
+        if uid:
+            user = User.get_user_with_uid(uid)
+            
+        if not user:
+            email = self.request.get('email')
+            password = self.request.get('password')
+            user = User.get_user_with_password(email, password)
+
         if not user:
             self.json_response(True, {'message': 'Email and password don\'t match.'})
             return

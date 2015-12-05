@@ -158,8 +158,9 @@ class Signin(BaseHandler):
                 firstname = self.request.get('firstname')
                 lastname = self.request.get('lastname')
                 gender = self.request.get('gender')
+                email = self.request.get('email')
 
-                user = User(auth_id=uid, firstname=firstname, lastname=lastname, gender=gender)
+                user = User(auth_id=uid, email=email, firstname=firstname, lastname=lastname, gender=gender)
                 user.put()
         else:
             email = self.request.get('email')

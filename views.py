@@ -86,6 +86,10 @@ class Home(BaseHandler):
         services = Service.query().fetch()
         self.render('home', {'services': services})
 
+class Signinup(BaseHandler):
+    def get(self):
+        self.render('signinup')
+
 class Signup(BaseHandler):
     def get(self):
         if self.user_key:
@@ -231,4 +235,3 @@ class RateService(BaseHandler):
     @login_required
     def post(self, service_id):
         pass
-        

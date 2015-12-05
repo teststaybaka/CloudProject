@@ -5,9 +5,24 @@ $(document).ready(function(){
 			FB.login(function(response) {
   				if (response.status === 'connected') {
     			// Logged into your app and Facebook.
-
+    			var auth_id, firstname, lastname, gender, email;
+    				FB.api('/me', function(response){
+    					response = JSON.parse(response);
+    					auth_id = response.id;
+    					firstname = response.first_name;
+    					lastname = response.last_name;
+    					gender = response.gender;
+    					email = response.email;
+    				});
     			$.post("https://"+window.location.hostname+"/signin", 
-    				JSON.stringify({"fb-access-token":response.accessToken}),
+    				JSON.stringify({
+    					"fb-access-token":response.accessToken,
+    					"auth_id":auth_id,
+    					"firstname":firstname,
+    					"lastname":lastname,
+    					"gender":gender,
+    					"email":email
+    				}),
     				function(data){
 
     				}

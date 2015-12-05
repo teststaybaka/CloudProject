@@ -23,7 +23,7 @@ class User(ndb.Model):
 
   lastname = ndb.StringProperty(required=True, indexed=False)
   firstname = ndb.StringProperty(required=True, indexed=False)
-  gender = ndb.StringProperty(required=True, choices=['Male', 'Female'], indexed=False)
+  gender = ndb.StringProperty(required=True, indexed=False)
   auth_id = ndb.StringProperty()
   email = ndb.StringProperty(indexed=False)
   password = ndb.StringProperty(indexed=False)
@@ -55,12 +55,13 @@ class User(ndb.Model):
       return None
 
   @classmethod
-  def get_user_with_uid(cls, uid):
-    user = cls.query(cls.uid==uid).get()
+  def get_user_with_uid(cls, auth_id):
+    user = cls.query(cls.auth_id==auth_id).get()
     if user:
       return user
     else:
       return None
+
 
 
 class Service(ndb.Model):

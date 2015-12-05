@@ -53,10 +53,12 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           {% if auth %}
-
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/signout">Sign out</a></li>
+          </ul>
           {% else %}
           <form class="navbar-form navbar-right">
-            <a type="submit" class="btn btn-success" href="/signin">Sign in/up</a>
+            <a class="btn btn-success" href="/signin">Sign in/up</a>
             Or
           </form>
           {% endif %}

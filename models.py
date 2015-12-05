@@ -28,7 +28,7 @@ class User(ndb.Model):
   email = ndb.StringProperty(indexed=False)
   password = ndb.StringProperty(indexed=False)
   token = ndb.StringProperty()
-  rates = ndb.FloatProperty()
+  rates = ndb.FloatProperty(required=True, default=-1)
   phone = ndb.StringProperty()
 
   @classmethod
@@ -73,5 +73,5 @@ class Service(ndb.Model):
   available_time = ndb.StringProperty()
   service_type = ndb.StringProperty(required=True, choices=['Fashion', 'Beauty'])
   status = ndb.IntegerProperty(required=True, default=0)
-  rates = ndb.FloatProperty()
+  rates = ndb.FloatProperty(required=True, default=-1)
   created = ndb.DateTimeProperty(auto_now_add=True)

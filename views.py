@@ -96,12 +96,6 @@ class Signinup(BaseHandler):
         self.render('signinup')
 
 class Signup(BaseHandler):
-    def get(self):
-        if self.user_key:
-            self.redirect(self.uri_for('home'))
-        else:
-            self.render('signup')
-
     def post(self):
         if self.user_key:
             self.json_response(True, {'message': 'Already sign in!'})

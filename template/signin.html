@@ -11,6 +11,9 @@ window.fbAsyncInit = function() {
       xfbml      : true,
       version    : 'v2.5'
     });
+    FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+        });
   };
 
   // Load the SDK asynchronously
@@ -36,5 +39,6 @@ window.fbAsyncInit = function() {
         <input type="submit" value="Sign in">
     </div>
 </form>
-<div id="facebook"></div>
+<div id="google-login"></div>
+<div id="facebook-login"></div>
 {% endblock %}

@@ -29,26 +29,46 @@ form input[type=submit]{
     font-weight: bold;
     color: aliceblue;
     position: absolute;
-    margin-top: 15px;
+    margin-top: 23px;
     margin-left: 65px;
     width: 150px;
+    height: 28px;
     border-radius: 5px 5px;
+    font-size: 9px;
+    font-weight: bold;
+    color: aliceblue;
+    font-family: 'Quicksand', sans-serif;
+    padding-left: 10px;
 }
 form input[type=submit]:hover{
 	cursor: pointer;
 	background-color: #008B8B;
 }
-#facebook{
+#google-login{
 	position: relative;
 	margin: 0 auto;
-	top: 40%;
+	top: 41%;
+	opacity: .9;
+	background: url("images/google.png") no-repeat center center;
+	background-size: contain;
+	width: 150px;
+	height: 40px;
+}
+#google-login:hover{
+	cursor: pointer;
+	opacity: 1;
+}
+#facebook-login{
+	position: relative;
+	margin: 0 auto;
+	top: 40.5%;
 	opacity: .9;
 	background: url("images/facebook.jpg") no-repeat center center;
 	background-size: contain;
 	width: 150px;
 	height: 40px;
 }
-#facebook:hover{
+#facebook-login:hover{
 	cursor: pointer;
 	opacity: 1;
 }

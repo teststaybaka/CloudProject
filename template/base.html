@@ -11,14 +11,12 @@
         <title>{% block page_title %}Hands for you!{% endblock %}</title>
 
         {% block head %}
+        <script src="/assets/js/jquery.min.js"></script>
         <!-- Bootstrap core CSS -->
         <link href="/dist/css/bootstrap.min.css" rel="stylesheet">
 
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <link href="/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-
-        <!-- Custom styles for this template -->
-        <link href="jumbotron.css" rel="stylesheet">
 
         <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
         <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -54,15 +52,14 @@
           <a class="navbar-brand" href="/">HandsForYou!</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
+          {% if auth %}
+
+          {% else %}
           <form class="navbar-form navbar-right">
-            <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control">
-            </div>
-            <div class="form-group">
-              <input type="password" placeholder="Password" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">Sign in</button>
+            <a type="submit" class="btn btn-success" href="/signin">Sign in/up</a>
+            Or
           </form>
+          {% endif %}
         </div><!--/.navbar-collapse -->
       </div>
     </nav>

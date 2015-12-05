@@ -56,6 +56,7 @@ class User(ndb.Model):
 
 class Service(ndb.Model):
   creator = ndb.KeyProperty(kind='User', required=True)
+  address = ndb.StringProperty(indexed=False)
   location = ndb.GeoPtProperty()
   description = ndb.TextProperty(indexed=False)
   price_min = ndb.IntegerProperty()
@@ -63,3 +64,5 @@ class Service(ndb.Model):
   available_time = ndb.StringProperty()
   service_type = ndb.StringProperty(required=True, choices=['Fashion', 'Beauty'])
   status = ndb.IntegerProperty(required=True, default=0)
+  rates = ndb.FloatProperty()
+  created = ndb.DateTimeProperty(auto_now_add=True)

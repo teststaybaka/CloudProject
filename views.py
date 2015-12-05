@@ -83,7 +83,8 @@ def login_required_json(handler):
 
 class Home(BaseHandler):
     def get(self):
-        self.render('home')
+        services = Service.query().fetch()
+        self.render('home', {'services': services})
 
 class Signup(BaseHandler):
     def get(self):
@@ -159,3 +160,75 @@ class Signout(BaseHandler):
     def get(self):
         self.response.set_cookie('user_id', '', path='/', max_age=0)
         self.redirect(self.uri_for('home'))
+
+class AddService(BaseHandler):
+    @login_required
+    def get(self):
+        self.render('serviceAdd')
+
+    @login_required_json
+    def post(self):
+        address = self.request.get('address')
+        latitude = float(self.request.get('latitude'))
+        longitude = float(self.request.get('longitude'))
+        description = self.request.get('description')
+        price_min = int(self.request.get('price_min'))
+        price_max = int(self.request.get('price_max'))
+        available_time = self.request.get('available_time')
+        service_type = self.request.get('service_type')
+
+        service = Service(creator=self.user_key, address=address, location=ndb.GeoPt(latitude, longitude) , description=description, price_min=price_min, price_max=price_max, available_time=available_time, service_type=service_type)
+        service.put()
+
+        self.json_response(False)
+
+class MyServices(BaseHandler):
+    @login_required
+    def get(self):
+        services = Service.query(creator=self.user_key).order(-Service.created).fetch()
+        self.render('serviceList', {'services': services})
+
+class ServiceDetail(BaseHandler):
+    def get(self, service_id):
+        service = ndb.Key('Service', int(service_id)).get()
+        self.render('serviceDetail', {'service': service})
+
+class SearchServices(BaseHandler):
+    def get(self):
+        pass
+        
+class RequestService(BaseHandler):
+    @login_required
+    def post(self, service_id):
+        pass
+
+class MyRequest(BaseHandler):
+    @login_required
+    def get(self):
+        pass
+
+class ReceivedRequest(BaseHandler):
+    @login_required
+    def get(self):
+        pass
+
+class DeclineRequest(BaseHandler):
+    @login_required
+    def post(self, service_id):
+        pass
+
+class AcceptRequest(BaseHandler):
+    @login_required
+    def post(self, service_id):
+        pass
+
+class FinishRequest(BaseHandler):
+    @login_required
+    def post(self, service_id):
+        pass
+
+class RateService(BaseHandler):
+    @login_required
+    def post(self, service_id):
+        pass
+        

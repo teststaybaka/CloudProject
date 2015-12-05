@@ -53,6 +53,11 @@ class BaseHandler(webapp2.RequestHandler):
         if not context:
             context = {}
 
+        if self.user_key:
+            context['auth'] = True
+        else:
+            context['auth'] = False
+
         self.response.headers['Content-Type'] = 'text/html'
         path = 'template/' + tempname + '.html'
         template = env.get_template(path)

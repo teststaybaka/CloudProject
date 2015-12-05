@@ -18,6 +18,10 @@ handlers:
 - url: /assets
   static_dir: assets
 
+
+- url: /dist
+  static_dir: dist
+
 - url: /_ah/queue/deferred
   login: admin
   script: google.appengine.ext.deferred.deferred.application

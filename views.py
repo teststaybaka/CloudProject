@@ -83,7 +83,7 @@ def login_required_json(handler):
 
 class Home(BaseHandler):
     def get(self):
-        self.render('index')
+        self.render('index2')
 
 class Signinup(BaseHandler):
     def get(self):

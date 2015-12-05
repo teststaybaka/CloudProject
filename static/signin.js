@@ -1,15 +1,26 @@
 $(document).ready(function(){
-		$("#facebook").click(function(){
+		$("#facebook-login").click(function(){
 			if(checkLoginState() === "connected")
 				return;
 			FB.login(function(response) {
   				if (response.status === 'connected') {
     			// Logged into your app and Facebook.
+
+    			$.post("https://"+window.location.hostname+"/signin", 
+    				JSON.stringify({"fb-access-token":response.accessToken}),
+    				function(data){
+
+    				}
+    			)
+    			//failure
+    			window.location.replace("https://"+window.location.hostname+"/signup");
 			  } else if (response.status === 'not_authorized') {
 			    // The person is logged into Facebook, but not your app.
+			    window.location.replace("https://"+window.location.hostname+"/signin");
 			  } else {
     			// The person is not logged into Facebook, so we're not sure if
     			// they are logged into this app or not.
+    			window.location.replace("https://"+window.location.hostname+"/signin");
   			}
 			});
 		})
@@ -21,16 +32,7 @@ $(document).ready(function(){
     console.log('statusChangeCallback');
     console.log(response);
 
-    if (response.status === 'connected') {
-      // Logged into your app and Facebook.
-      document.cookie="user_id="+response.authResponse.userID+";";
-      window.location.replace("https://hands-for-you.appspot.com/signin");
-    } else if (response.status === 'not_authorized') {
-      // The person is logged into Facebook, but not your app.
-    } else {
-      // The person is not logged into Facebook, so we're not sure if
-      // they are logged into this app or not.
-    }
+    window.location.replace("https://"+window.location.hostname+"/signin");
   }
 
   // This function is called when someone finishes with the Login

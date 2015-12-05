@@ -28,7 +28,7 @@ class User(ndb.Model):
   email = ndb.StringProperty(indexed=False)
   password = ndb.StringProperty(indexed=False)
   token = ndb.StringProperty()
-  rates = ndb.FloatProperty(required=True, default=-1)
+  rates = ndb.FloatProperty()
   phone = ndb.StringProperty()
 
   @classmethod
@@ -62,17 +62,15 @@ class User(ndb.Model):
     else:
       return None
 
-
-
+SERVICE_TYPES = ['Nails', 'Tutoring', 'Babysitting', 'Fashion', 'Beauty', 'Housing', 'Housekeeping', 'Designated driving']
 class Service(ndb.Model):
   creator = ndb.KeyProperty(kind='User', required=True)
   address = ndb.StringProperty(indexed=False)
   location = ndb.GeoPtProperty()
   description = ndb.TextProperty(indexed=False)
-  price_min = ndb.IntegerProperty()
-  price_max = ndb.IntegerProperty()
+  price_suggested = ndb.IntegerProperty()
   available_time = ndb.StringProperty()
-  service_type = ndb.StringProperty(required=True, choices=['Fashion', 'Beauty'])
+  service_types = ndb.StringProperty(repeated=True, choices=SERVICE_TYPES)
   status = ndb.IntegerProperty(required=True, default=0)
-  rates = ndb.FloatProperty(required=True, default=-1)
+  rates = ndb.FloatProperty()
   created = ndb.DateTimeProperty(auto_now_add=True)

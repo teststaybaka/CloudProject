@@ -1,0 +1,51 @@
+{% extends "template/base.html" %}
+{% block head %}
+{{ super() }}
+<script src="/assets/serviceAdd.min.js"></script>
+{% endblock %}
+
+{% block body %}
+<div class="col-md-2"></div>
+<form class="add-service-form form-horizontal col-md-8" method="POST" action="" style="margin-top: 90px;">
+    <h3 style="text-align: center; margin-top: 10px; margin-bottom: 20px;">New service!</h3>
+    <div class="form-group">
+        <label class="control-label col-md-2">Address: </label>
+        <div class="col-md-10">
+            <input class="form-control" type="text" name="address" placeholder="If the service needs an address.">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2">Description: </label>
+        <div class="col-md-10">
+            <input class="form-control" type="text" name="description" placeholder="What's it about?">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2">Suggested price: </label>
+        <div class="col-md-10">
+            <input class="form-control" type="text" name="price" placeholder="USD">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2">Available time: </label>
+        <div class="col-md-10">
+            <input class="form-control" type="text" name="available" placeholder="Monday to Sunday, from morning to evening.">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2">Service type: </label>
+        <div class="col-md-10">
+            <select class="form-control">
+                {% for t in SERVICE_TYPES %}
+                <option>{{ t }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12">
+            <input class="btn btn-primary pull-right" type="submit" value="Add">
+        </div>
+    </div>
+</form>
+{% endblock %}

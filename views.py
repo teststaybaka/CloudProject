@@ -55,9 +55,9 @@ class BaseHandler(webapp2.RequestHandler):
             context = {}
 
         if self.user_key:
-            context['auth'] = True
-        else:
-            context['auth'] = False
+            if 'user' not in context:
+                context['user'] = {}
+            context['user'].update(self.user_key.get().to_dict())
 
         self.response.headers['Content-Type'] = 'text/html'
         path = 'template/' + tempname + '.html'
@@ -182,7 +182,7 @@ class Signout(BaseHandler):
 class AddService(BaseHandler):
     @login_required
     def get(self):
-        self.render('serviceAdd')
+        self.render('serviceAdd', {'SERVICE_TYPES': SERVICE_TYPES})
 
     @login_required_json
     def post(self):
@@ -190,12 +190,11 @@ class AddService(BaseHandler):
         latitude = float(self.request.get('latitude'))
         longitude = float(self.request.get('longitude'))
         description = self.request.get('description')
-        price_min = int(self.request.get('price_min'))
-        price_max = int(self.request.get('price_max'))
+        price = int(self.request.get('price'))
         available_time = self.request.get('available_time')
         service_type = self.request.get('service_type')
 
-        service = Service(creator=self.user_key, address=address, location=ndb.GeoPt(latitude, longitude) , description=description, price_min=price_min, price_max=price_max, available_time=available_time, service_type=service_type)
+        service = Service(creator=self.user_key, address=address, location=ndb.GeoPt(latitude, longitude) , description=description, price_suggested=price, available_time=available_time, service_type=service_type)
         service.put()
 
         self.json_response(False)

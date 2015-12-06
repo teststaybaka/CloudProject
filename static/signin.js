@@ -14,6 +14,20 @@ $(document).ready(function(){
 			}
 		});
 	});
+
+	$("#signup").submit(function(){
+			$.post('/signin', $(this).serialize(), function (){
+	            window.location.replace("/");
+	    	});
+    	}
+    );
+
+    $("#signin").submit(function(){
+			$.post('/signin', $(this).serialize(), function (){
+	            window.location.replace("/");
+	    	});
+    	}
+    );
 });
 
 

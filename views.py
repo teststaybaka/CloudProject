@@ -50,6 +50,9 @@ class BaseHandler(webapp2.RequestHandler):
         else:
             return None
 
+    def get_keywords(self):
+        return models.ILLEGAL_LETTER.sub(' ', self.request.get('keywords')).strip().lower()
+
     def render(self, tempname, context=None):
         if not context:
             context = {}
@@ -90,10 +93,6 @@ def login_required_json(handler):
 class Home(BaseHandler):
     def get(self):
         self.render('index2')
-
-class Signinup(BaseHandler):
-    def get(self):
-        self.render('signinup')
 
 class Signup(BaseHandler):
     def post(self):
@@ -150,8 +149,13 @@ class Signin(BaseHandler):
             self.json_response(True, {'message': 'Already sign in!'})
             return
 
-        if self.request.get('fb-access-token'):
-            uid = fb_get_user_id(self.request.get('fb-access-token'))
+        access_token = self.request.get('fb-access-token')
+        if access_token:
+            try:
+                uid = fb_get_user_id(access_token)
+            except Exception:
+                self.json_response(True, {'message': 'Facebook login failed.'})
+                return
 
             if uid:
                 user = User.get_user_with_uid(uid)
@@ -183,73 +187,4 @@ class Signout(BaseHandler):
     def get(self):
         self.response.set_cookie('user_id', '', path='/', max_age=0)
         self.redirect(self.uri_for('home'))
-
-class AddService(BaseHandler):
-    @login_required
-    def get(self):
-        self.render('serviceAdd', {'SERVICE_TYPES': SERVICE_TYPES})
-
-    @login_required_json
-    def post(self):
-        address = self.request.get('address')
-        latitude = float(self.request.get('latitude'))
-        longitude = float(self.request.get('longitude'))
-        description = self.request.get('description')
-        price = int(self.request.get('price'))
-        available_time = self.request.get('available_time')
-        service_type = self.request.get('service_type')
-
-        service = Service(creator=self.user_key, address=address, location=ndb.GeoPt(latitude, longitude) , description=description, price_suggested=price, available_time=available_time, service_type=service_type)
-        service.put()
-
-        self.json_response(False)
-
-class MyServices(BaseHandler):
-    @login_required
-    def get(self):
-        services = Service.query(creator=self.user_key).order(-Service.created).fetch()
-        self.render('serviceList', {'services': services})
-
-class ServiceDetail(BaseHandler):
-    def get(self, service_id):
-        service = ndb.Key('Service', int(service_id)).get()
-        self.render('serviceDetail', {'service': service})
-
-class SearchServices(BaseHandler):
-    def get(self):
-        pass
         
-class RequestService(BaseHandler):
-    @login_required
-    def post(self, service_id):
-        pass
-
-class MyRequest(BaseHandler):
-    @login_required
-    def get(self):
-        pass
-
-class ReceivedRequest(BaseHandler):
-    @login_required
-    def get(self):
-        pass
-
-class DeclineRequest(BaseHandler):
-    @login_required
-    def post(self, service_id):
-        pass
-
-class AcceptRequest(BaseHandler):
-    @login_required
-    def post(self, service_id):
-        pass
-
-class FinishRequest(BaseHandler):
-    @login_required
-    def post(self, service_id):
-        pass
-
-class RateService(BaseHandler):
-    @login_required
-    def post(self, service_id):
-        pass

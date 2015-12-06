@@ -22,6 +22,7 @@ routes = [
     webapp2.Route(r'/proposal/<proposal_id:\d+>/modify', propose.Conversation, name="modify_proposal", handler_method='modify'),
     webapp2.Route(r'/proposal/<proposal_id:\d+>/decline', propose.DeclineProposal, name="decline_proposal"),
     webapp2.Route(r'/proposal/<proposal_id:\d+>/accept', propose.AcceptProposal, name="accept_proposal"),
+    webapp2.Route(r'/proposal/<proposal_id:\d+>/progress', propose.Progress, name="progress"),
     webapp2.Route(r'/proposal/<proposal_id:\d+>/finish', propose.FinishProposal, name="finish_proposal"),
     webapp2.Route(r'/proposal/<proposal_id:\d+>/confirm', propose.ConfirmFinish, name="confirm_proposal"),
 ]

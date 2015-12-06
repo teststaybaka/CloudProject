@@ -143,9 +143,6 @@ class Signin(BaseHandler):
             self.render('signin')
 
     def post(self):
-         user = None
-        uid = None
-
         if self.user_key:
             self.json_response(True, {'message': 'Already sign in!'})
             return
@@ -158,24 +155,28 @@ class Signin(BaseHandler):
                 self.json_response(True, {'message': 'Facebook login failed.'})
                 return
 
-        if uid:
-            user = User.get_user_with_uid(uid)
-            if not user:
-                firstname = self.request.get('firstname')
-                lastname = self.request.get('lastname')
-                gender = self.request.get('gender')
-                email = self.request.get('email')
+            if uid:
+                user = User.get_user_with_uid(uid)
+                if not user:
+                    firstname = self.request.get('firstname')
+                    lastname = self.request.get('lastname')
+                    gender = self.request.get('gender')
+                    email = self.request.get('email')
 
-                user = User(auth_id=uid, email=email, firstname=firstname, lastname=lastname, gender=gender)
-                user.put()
+                    user = User(auth_id=uid, email=email, firstname=firstname, lastname=lastname, gender=gender)
+                    user.put()
+            else:
+                self.json_response(True, {'message': 'Facebook login failed.'})
+                return
+
         else:
             email = self.request.get('email')
             password = self.request.get('password')
             user = User.get_user_with_password(email, password)
 
-        if not user:
-            self.json_response(True, {'message': 'Email and password don\'t match.'})
-            return
+            if not user:
+                self.json_response(True, {'message': 'Email and password don\'t match.'})
+                return
 
         self.response.set_cookie('user_id', str(user.key.id()), path='/')
         self.json_response(False)

@@ -104,6 +104,7 @@ class Proposal(ndb.Model):
   times = ndb.IntegerProperty(indexed=False)
   price = ndb.IntegerProperty(indexed=False)
   progress = ndb.IntegerProperty(required=True, default=0, indexed=False)
+  confirmed_progress = ndb.IntegerProperty(required=True, default=0, indexed=False)
   status = ndb.StringProperty(required=True, default='pending', choices=['pending', 'accepted', 'declined', 'finished', 'confirmed'])
   last_message = ndb.TextProperty()
   kind = ndb.StringProperty(required=True, choices=['offer', 'request'])

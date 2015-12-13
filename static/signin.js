@@ -19,7 +19,8 @@ $(document).ready(function(){
 		});
 	});
 
-	$("#signup").submit(function(){
+	$("#signup").submit(function(evt){
+            evt.preventDefault();
 			$.post('/signup', $(this).serialize(), function (result) {
                 if (result.error) {
                     console.log(result.message);
@@ -31,6 +32,7 @@ $(document).ready(function(){
     );
 
     $("#signin").submit(function(){
+            evt.preventDefault();
 			$.post('/signin', $(this).serialize(), function (result){
                 if (result.error) {
                     console.log(result.message);

@@ -9,10 +9,10 @@ routes = [
     
     webapp2.Route(r'/my/services', service.MyServices, name="my_services"),
     webapp2.Route(r'/search', service.SearchServices, name="search_services"),
-    webapp2.Route(r'/service/add', service.Service, name="add_service", handler_method='add'),
-    webapp2.Route(r'/service/add/post', service.Service, name="add_service_post", handler_method='add_post'),
-    webapp2.Route(r'/service/<service_id:\d+>/modify', service.Service, name="modify_service", handler_method='modify'),
-    webapp2.Route(r'/service/<service_id:\d+>/modify/post', service.Service, name="modify_service_post", handler_method='modify_post'),
+    webapp2.Route(r'/service/add', service.ServiceHandle, name="add_service", handler_method='add'),
+    webapp2.Route(r'/service/add/post', service.ServiceHandle, name="add_service_post", handler_method='add_post'),
+    webapp2.Route(r'/service/<service_id:\d+>/modify', service.ServiceHandle, name="modify_service", handler_method='modify'),
+    webapp2.Route(r'/service/<service_id:\d+>/modify/post', service.ServiceHandle, name="modify_service_post", handler_method='modify_post'),
     webapp2.Route(r'/service/<service_id:\d+>', service.ServiceDetail, name="service_detail"),
     webapp2.Route(r'/service/<service_id:\d+>/cancel', service.CancelService, name="cancel_service"),
 

@@ -90,7 +90,7 @@ class Service(ndb.Model):
         search.AtomField(name='status', value=self.status),
         search.AtomField(name='kind', value=self.kind),
     ]
-    if address:
+    if self.address:
         fields.append(search.GeoField(name='location', value=search.GeoPoint(self.location.latitude, self.location.longitude)))
     
     doc = search.Document(

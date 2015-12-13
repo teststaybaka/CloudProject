@@ -1,7 +1,20 @@
 {% extends "template/base.html" %}
 {% block head %}
 {{ super() }}
-<script src="/assets/serviceAdd.min.js"></script>
+<!--<script src="/assets/serviceAdd.min.js"></script>-->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="/static/serviceAdd.js"></script>
+<style>
+    .ui-menu{
+        color: grey;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        border-color: #9ecaed;
+        box-shadow: 0 0 10px #9ecaed;
+    }   
+
+</style>
 {% endblock %}
 
 {% block body %}
@@ -9,6 +22,21 @@
 <form class="add-service-form form-horizontal col-md-8" method="POST" action="" style="border: 1px solid rgb(200,200,200); border-radius: 5px; margin-top: 100px; padding-top: 40px; padding-bottom: 40px; box-shadow: 4px 4px 3px rgb(200,200,200);">
     <h3 style="text-align: center; margin-top: 10px; margin-bottom: 20px;">New service!</h3>
     <p style="text-align: center;">Click here to create a service you can offer. Give your service a type, a location and a price. It will help other users easily find your service.</p>
+    <div class="form-group">
+        <label class="control-label col-md-2">Title: </label>
+        <div class="col-md-10">
+            <input class="form-control" type="text" name="title" placeholder="What should we call your service?">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2">Kind: </label>
+        <div class="col-md-10">
+                <select name="kind" class="form-control">
+                    <option value="offer">Offer</option>
+                    <option value="request">Request</option>
+                </select>
+        </div>
+    </div>
     <div class="form-group">
         <label class="control-label col-md-2">Address: </label>
         <div class="col-md-10">
@@ -30,17 +58,19 @@
     <div class="form-group">
         <label class="control-label col-md-2">Available time: </label>
         <div class="col-md-10">
-            <input class="form-control" type="text" name="available" placeholder="Monday to Sunday, from morning to evening.">
+            <input class="form-control" type="text" name="available_time" placeholder="Monday to Sunday, from morning to evening.">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2">Quantity: </label>
+        <div class="col-md-10">
+            <input class="form-control" type="text" name="times" placeholder="How many times would you like to offer this service?">
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-md-2">Service type: </label>
         <div class="col-md-10">
-            <select class="form-control">
-                {% for t in SERVICE_TYPES %}
-                <option>{{ t }}</option>
-                {% endfor %}
-            </select>
+                <input id="service_tags" class="form-control" type="text" name="service_tags" placeholder="Service Tag(s)">
         </div>
     </div>
     <div class="form-group">

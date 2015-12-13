@@ -147,7 +147,7 @@ class Progress(BaseHandler):
     @login_required_json
     def post(self, proposal_id):
         proposal = ndb.Key('Proposal', int(proposal_id)).get()
-        if not proposal or proposal.status != 'accepted' or proposal.decider != self.user_key: or proposal.progress >= proposal.times
+        if not proposal or proposal.status != 'accepted' or proposal.decider != self.user_key or proposal.progress >= proposal.times:
             self.json_response(True, {'message': 'Invalid request.'})
             return
 

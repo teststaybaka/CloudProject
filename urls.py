@@ -25,7 +25,6 @@ routes = [
     webapp2.Route(r'/proposal/<proposal_id:\d+>/decline', propose.DeclineProposal, name="decline_proposal"),
     webapp2.Route(r'/proposal/<proposal_id:\d+>/accept', propose.AcceptProposal, name="accept_proposal"),
     webapp2.Route(r'/proposal/<proposal_id:\d+>/progress', propose.Progress, name="progress"),
-    webapp2.Route(r'/proposal/<proposal_id:\d+>/finish', propose.FinishProposal, name="finish_proposal"),
-    webapp2.Route(r'/proposal/<proposal_id:\d+>/confirm', propose.ConfirmFinish, name="confirm_proposal"),
+    webapp2.Route(r'/proposal/<proposal_id:\d+>/confirm', propose.ConfirmProgress, name="confirm_progress"),
 ]
 application = webapp2.WSGIApplication(routes, debug=True)

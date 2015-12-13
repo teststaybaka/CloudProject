@@ -152,31 +152,21 @@ class Progress(BaseHandler):
             return
 
         proposal.progress += 1
+        if proposal.progress == proposal.times:
+            proposal.status = 'finished'
         proposal.put()
         self.json_response(False)
 
-class FinishProposal(BaseHandler):
+class ConfirmProgress(BaseHandler):
     @login_required_json
     def post(self, proposal_id):
         proposal = ndb.Key('Proposal', int(proposal_id)).get()
-        if not proposal or proposal.status != 'accepted' or proposal.decider != self.user_key:
+        if not proposal or proposal.status != 'accepted' or proposal.requestor != self.user_key or proposal.progress >= proposal.confirmed_progress:
             self.json_response(True, {'message': 'Invalid request.'})
             return
 
-        proposal.status = 'finished'
+        proposal.confirmed_progress = proposal.progress
+        if proposal.progress == progress.times:
+            proposal.status = 'confirmed'
         proposal.put()
-        self.json_response(False)
-
-class ConfirmFinish(BaseHandler):
-    @login_required_json
-    def post(self, proposal_id):
-        proposal = ndb.Key('Proposal', int(proposal_id)).get()
-        if not proposal or proposal.status != 'finished' or proposal.requestor != self.user_key:
-            self.json_response(True, {'message': 'Invalid request.'})
-            return
-
-        proposal.status = 'confirmed'
-        service = proposal.service.get()
-        service.status = 'completed'
-        ndb.put_multi((proposal, service))
         self.json_response(False)

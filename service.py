@@ -26,6 +26,10 @@ class SearchServices(BaseHandler):
         if price_max:
             query_string += ' AND price <= '+price_max
 
+        kind = self.request.get('kind')
+        if kind:
+            query_string += ' AND kind = '+kind
+
         address = self.request.get('address')
         if address:
             try:

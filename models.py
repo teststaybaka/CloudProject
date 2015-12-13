@@ -86,6 +86,7 @@ class Service(ndb.Model):
         search.TextField(name='content', value=searchable.lower()),
         search.NumberField(name='price', value=self.price),
         search.AtomField(name='status', value=self.status),
+        search.AtomField(name='kind', value=self.kind),
     ]
     if self.address:
         fields.append(search.GeoField(name='location', value=search.GeoPoint(self.location.latitude, self.location.longitude)))
@@ -104,6 +105,7 @@ class Proposal(ndb.Model):
   times = ndb.IntegerProperty(indexed=False)
   price = ndb.IntegerProperty(indexed=False)
   progress = ndb.IntegerProperty(required=True, default=0, indexed=False)
+  confirmed_progress = ndb.IntegerProperty(required=True, default=0, indexed=False)
   status = ndb.StringProperty(required=True, default='pending', choices=['pending', 'accepted', 'declined', 'finished', 'confirmed'])
   last_message = ndb.TextProperty()
   kind = ndb.StringProperty(required=True, choices=['offer', 'request'])

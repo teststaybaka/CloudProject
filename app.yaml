@@ -18,7 +18,6 @@ handlers:
 - url: /assets
   static_dir: assets
 
-
 - url: /dist
   static_dir: dist
 

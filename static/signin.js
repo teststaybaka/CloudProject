@@ -16,7 +16,7 @@ $(document).ready(function(){
 	});
 
 	$("#signup").submit(function(){
-			$.post('/signin', $(this).serialize(), function (){
+			$.post('/signup', $(this).serialize(), function (){
 	            window.location.replace("/");
 	    	});
     	}

@@ -51,7 +51,7 @@ class BaseHandler(webapp2.RequestHandler):
             return None
 
     def get_keywords(self):
-        return models.ILLEGAL_LETTER.sub(' ', self.request.get('keywords')).strip().lower()
+        return ILLEGAL_LETTER.sub(' ', self.request.get('keywords')).strip().lower()
 
     def render(self, tempname, context=None):
         if not context:

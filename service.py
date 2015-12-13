@@ -17,12 +17,12 @@ class MyServices(BaseHandler):
         self.render('serviceList', {'services': services})
 
 class SearchServices(BaseHandler):
-    def get(self):
-        self.render('findService')
 
-    def post(self):
+    def get(self):
         keywords = self.get_keywords()
-        query_string = 'content: '+keywords
+        query_string = ''
+        if keywords:
+            query_string = 'content: '+ keywords
 
         status = self.request.get('status')
         if status:
@@ -62,7 +62,7 @@ class SearchServices(BaseHandler):
         total_found = result.number_found
         services = ndb.get_multi([ndb.Key(urlsafe=doc.doc_id) for doc in result.results])
         creators = ndb.get_multi([service.creator for service in services])
-        self.render('findResult', {'services': services, 'creators': creators})
+        self.render('findService', {'services': services, 'creators': creators})
 
 class ServiceHandle(BaseHandler):
     @login_required

@@ -31,7 +31,7 @@ $(document).ready(function(){
     	}
     );
 
-    $("#signin").submit(function(){
+    $("#signin").submit(function(evt){
             evt.preventDefault();
 			$.post('/signin', $(this).serialize(), function (result){
                 if (result.error) {

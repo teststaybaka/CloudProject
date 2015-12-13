@@ -1,0 +1,59 @@
+{% extends "template/base.html" %}
+{% block head %}
+{{ super() }}
+
+
+<style>
+.panel{
+	margin-top: 50px;
+}
+.modify:before{
+	content: "|";
+	margin-right: 2px;
+	color: #337ab7;
+}
+td{
+ 	max-width:200px; 
+ 	overflow-wrap: break-word;
+}
+.panel-title{
+	font-size: 22px;
+}
+</style>
+
+
+{% endblock %}
+{% block body %}
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading"><h1 class="panel-title">My Services</h1></div>
+  <div class="panel-body">
+    <p>Here is a brief listing of your services</p>
+  </div>
+
+  <!-- Table -->
+<table class="table">
+<tr>
+	<td><b>#</b></td>
+	<td><b>Title</b></td>
+	<td><b>Kind</b></td>
+	<td><b>Description</b></td>
+	<td><b>Options</b></td>
+</tr>
+{% for service in services %}
+<tr>
+		<td> <b>{{ loop.index }} </b></td>
+        <td>{{ service.title }}</td>
+        <td> {% if service.kind == "offer" %}Service
+        	{% else %} Request
+        	{% endif %}
+        </td>
+       	<td>{{ service.description }} </td>	
+       	<td><a href="/service/{{ service.key.id() }}" class="service">More</a>
+       		<a class="modify" href="/service/{{ service.key.id() }}/modify" class="service">Modify</a>
+       	</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+{% endblock %}

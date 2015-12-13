@@ -27,6 +27,7 @@ class SearchServices(BaseHandler):
             
         if flag:
             query_string = 'content: '+ keywords
+<<<<<<< HEAD
             
             status = self.request.get('status')
             if status:
@@ -57,6 +58,69 @@ class SearchServices(BaseHandler):
                     return
 
                 query_string += ' AND distance(location, geopoint('+latitude+', '+longitude+')) < '+distance
+||||||| merged common ancestors
+
+        status = self.request.get('status')
+        if status:
+            query_string += ' AND status = '+status
+
+        price_min = self.request.get('price_min')
+        if price_min:
+            query_string += ' AND price >= '+price_min
+
+        price_max = self.request.get('price_max')
+        if price_max:
+            query_string += ' AND price <= '+price_max
+
+        kind = self.request.get('kind')
+        if kind:
+            query_string += ' AND kind = '+kind
+
+        address = self.request.get('address')
+        if address:
+            try:
+                loc_results = getGeolocation(self.address)
+                self.latitude = loc_results[0]['geometry']['location']['lat']
+                self.longitude = loc_results[0]['geometry']['location']['lng']
+                distance = self.request.get('distance')
+                t = float(distance)
+            except ValueError:
+                self.redirect(self.render('notify', {'message': 'Address or distance invalid.'}))
+                return
+
+            query_string += ' AND distance(location, geopoint('+latitude+', '+longitude+')) < '+distance
+=======
+
+        status = self.request.get('status')
+        if status:
+            query_string += ' AND status = "'+status+'"'
+
+        price_min = self.request.get('price_min')
+        if price_min:
+            query_string += ' AND price >= '+price_min
+
+        price_max = self.request.get('price_max')
+        if price_max:
+            query_string += ' AND price <= '+price_max
+
+        kind = self.request.get('kind')
+        if kind:
+            query_string += ' AND kind = '+kind
+
+        address = self.request.get('address')
+        if address:
+            try:
+                loc_results = getGeolocation(self.address)
+                self.latitude = loc_results[0]['geometry']['location']['lat']
+                self.longitude = loc_results[0]['geometry']['location']['lng']
+                distance = self.request.get('distance')
+                t = float(distance)
+            except ValueError:
+                self.redirect(self.render('notify', {'message': 'Address or distance invalid.'}))
+                return
+
+            query_string += ' AND distance(location, geopoint('+latitude+', '+longitude+')) < '+distance
+>>>>>>> f6ad349f641cb6f43cee1617a6c707dbf1d85eda
 
         options = search.QueryOptions(limit=20, ids_only=True)
         query = search.Query(query_string=query_string, options=options)

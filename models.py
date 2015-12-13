@@ -6,6 +6,7 @@ from webapp2_extras.appengine.auth.models import Unique
 from webapp2_extras import security
 from google.appengine.ext import deferred
 from datetime import datetime
+import urllib
 import urllib2
 import urlparse
 import re
@@ -18,6 +19,7 @@ def time_to_seconds(time):
 
 EMAIL_REGEX = re.compile(r"^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")
 ILLEGAL_LETTER = re.compile(r"[&@.,?!:/\\\"'<>=]")
+API_KEY = 'AIzaSyBCpSEG3WO0AmUculEWdNYitO_F1Cd05'
 
 class User(ndb.Model):
   Pepper = 'IcaAi1'

@@ -1,5 +1,16 @@
 from views import *
 
+def getGeolocation(address):
+    param = urllib.urlencode({'key': API_KEY, 'address': address})
+    req = urllib2.urlopen("https://maps.googleapis.com/maps/api/geocode/json?"param)
+    res = json.load(req)
+
+    if res.status != 'OK':
+        logging.info('Geo api requested', res.status)
+    else:
+        logging.info('Geo results')
+        logging.info(res.results)
+
 class MyServices(BaseHandler):
     @login_required
     def get(self):

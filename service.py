@@ -17,7 +17,6 @@ class MyServices(BaseHandler):
         self.render('serviceList', {'services': services})
 
 class SearchServices(BaseHandler):
-
     def get(self):
         keywords = self.get_keywords()
         query_string = ''

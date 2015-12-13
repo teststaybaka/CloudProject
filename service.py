@@ -104,7 +104,7 @@ class ServiceHandle(BaseHandler):
         try:
             self.times = int(self.request.get('times'))
         except ValueError:
-            raise ValueError('Invalid times.')
+            self.times = 0
         
         self.kind = self.request.get('kind')
         if self.kind not in ["request", "offer"]:

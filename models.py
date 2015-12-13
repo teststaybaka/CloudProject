@@ -83,7 +83,7 @@ class Service(ndb.Model):
 
   def createIndex(self):
     index = search.Index(name='services_by_created')
-    searchable = " ".join(self.service_tags+[self.description]);
+    searchable = " ".join(self.service_tags+[self.title, self.description]);
     fields = [
         search.TextField(name='content', value=searchable.lower()),
         search.NumberField(name='price', value=self.price),

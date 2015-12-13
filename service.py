@@ -26,7 +26,7 @@ class SearchServices(BaseHandler):
 
         status = self.request.get('status')
         if status:
-            query_string += ' AND status = '+status
+            query_string += ' AND status = "'+status+'"'
 
         price_min = self.request.get('price_min')
         if price_min:

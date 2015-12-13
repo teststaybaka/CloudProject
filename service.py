@@ -8,6 +8,9 @@ class MyServices(BaseHandler):
 
 class SearchServices(BaseHandler):
     def get(self):
+        self.render('findService')
+
+    def post(self):
         keywords = self.get_keywords()
         query_string = 'content: '+keywords
 
@@ -46,7 +49,7 @@ class SearchServices(BaseHandler):
         total_found = result.number_found
         services = ndb.get_multi([ndb.Key(urlsafe=doc.doc_id) for doc in result.results])
         creators = ndb.get_multi([service.creator for service in services])
-        self.render('SearchServices', {'services': services, 'creators': creators})
+        self.render('findResult', {'services': services, 'creators': creators})
 
 class Service(BaseHandler):
     @login_required

@@ -2,7 +2,7 @@ from views import *
 
 def getGeolocation(address):
     param = urllib.urlencode({'key': API_KEY, 'address': address})
-    req = urllib2.urlopen("https://maps.googleapis.com/maps/api/geocode/json?"param)
+    req = urllib2.urlopen("https://maps.googleapis.com/maps/api/geocode/json?"+param)
     res = json.load(req)
 
     if res.status != 'OK':

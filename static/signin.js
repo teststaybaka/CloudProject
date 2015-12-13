@@ -2,8 +2,12 @@ $(document).ready(function(){
 	$("#facebook-login").click(function(){
 		FB.getLoginStatus(function(response){
 			if(response.status === "connected"){
-				$.post("/signin", {"fb-access-token":response.authResponse.accessToken},function(){
-					window.location.replace("/");
+				$.post("/signin", {"fb-access-token":response.authResponse.accessToken},function(result){
+                    if (result.error) {
+                        console.log(result.message);
+                    } else {
+                        window.location.replace("/");
+                    }
 				});
 			} 
 			else{
@@ -16,15 +20,23 @@ $(document).ready(function(){
 	});
 
 	$("#signup").submit(function(){
-			$.post('/signup', $(this).serialize(), function (){
-	            window.location.replace("/");
+			$.post('/signup', $(this).serialize(), function (result) {
+                if (result.error) {
+                    console.log(result.message);
+                } else {
+                    window.location.replace("/");
+                }
 	    	});
     	}
     );
 
     $("#signin").submit(function(){
-			$.post('/signin', $(this).serialize(), function (){
-	            window.location.replace("/");
+			$.post('/signin', $(this).serialize(), function (result){
+                if (result.error) {
+                    console.log(result.message);
+                } else {
+                    window.location.replace("/");
+                }
 	    	});
     	}
     );
@@ -50,8 +62,12 @@ function sendConnectedResponse(callback){
 				"gender":gender,
 				"email":email
 			},
-			function(data){
-				window.location.replace("/");
+			function(result){
+                if (result.error) {
+                    console.log(result.message);
+                } else {
+                    window.location.replace("/");
+                }
 			}
 		);
 	});

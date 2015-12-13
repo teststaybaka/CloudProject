@@ -51,7 +51,7 @@ class SearchServices(BaseHandler):
         creators = ndb.get_multi([service.creator for service in services])
         self.render('findResult', {'services': services, 'creators': creators})
 
-class Service(BaseHandler):
+class ServiceHandle(BaseHandler):
     @login_required
     def add(self):
         self.render('serviceAdd')
@@ -95,13 +95,19 @@ class Service(BaseHandler):
             raise ValueError('Not specify available time.')
 
         self.service_tags = self.request.get('service_tags').split(",")
+        self.service_tags = [tag for tag in self.service_tags if tag.strip()]
         if not self.service_tags:
             raise ValueError('No tags specified.')
 
         try:
-            self.times = self.request.get('times')
+            self.times = int(self.request.get('times'))
         except ValueError:
             raise ValueError('Invalid times.')
+
+        
+        self.kind = self.request.get('kind')
+        if self.kind not in ["request", "offer"]:
+            raise ValueError('Invalid kind.')
 
     @login_required_json
     def add_post(self):
@@ -111,7 +117,10 @@ class Service(BaseHandler):
             self.json_response(True, {'message': str(e)})
             return
 
-        service = Service(creator=self.user_key, address=self.address, location=self.location, title=self.title, description=self.description, price=self.price, available_time=self.available_time, service_tags=self.service_tags)
+        logging.info(self.user_key)
+        service = Service(creator=self.user_key, address=self.address, location=self.location, 
+            title=self.title, description=self.description, price=self.price, available_time=self.available_time, 
+            service_tags=self.service_tags, kind=self.kind)
         service.put()
         service.createIndex()
         self.json_response(False)

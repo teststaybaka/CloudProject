@@ -87,7 +87,7 @@ class Service(ndb.Model):
         search.NumberField(name='price', value=self.price),
         search.AtomField(name='status', value=self.status),
     ]
-    if address:
+    if self.address:
         fields.append(search.GeoField(name='location', value=search.GeoPoint(self.location.latitude, self.location.longitude)))
     
     doc = search.Document(

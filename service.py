@@ -27,7 +27,7 @@ class SearchServices(BaseHandler):
             
         if flag:
             query_string = 'content: '+ keywords
-<<<<<<< HEAD
+
             
             status = self.request.get('status')
             if status:
@@ -58,7 +58,7 @@ class SearchServices(BaseHandler):
                     return
 
                 query_string += ' AND distance(location, geopoint('+latitude+', '+longitude+')) < '+distance
-||||||| merged common ancestors
+
 
         status = self.request.get('status')
         if status:
@@ -89,7 +89,7 @@ class SearchServices(BaseHandler):
                 return
 
             query_string += ' AND distance(location, geopoint('+latitude+', '+longitude+')) < '+distance
-=======
+
 
         status = self.request.get('status')
         if status:
@@ -120,7 +120,7 @@ class SearchServices(BaseHandler):
                 return
 
             query_string += ' AND distance(location, geopoint('+latitude+', '+longitude+')) < '+distance
->>>>>>> f6ad349f641cb6f43cee1617a6c707dbf1d85eda
+
 
         options = search.QueryOptions(limit=20, ids_only=True)
         query = search.Query(query_string=query_string, options=options)

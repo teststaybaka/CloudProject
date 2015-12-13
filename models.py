@@ -19,7 +19,7 @@ def time_to_seconds(time):
 
 EMAIL_REGEX = re.compile(r"^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")
 ILLEGAL_LETTER = re.compile(r"[&@.,?!:/\\\"'<>=]")
-API_KEY = 'AIzaSyBCpSEG3WO0AmUculEWdNYitO_F1Cd05'
+API_KEY = 'AIzaSyBCpSEG3WO0AmUculEWdNYitO_F1Cd05-o'
 
 class User(ndb.Model):
   Pepper = 'IcaAi1'
@@ -91,7 +91,7 @@ class Service(ndb.Model):
         search.AtomField(name='kind', value=self.kind),
     ]
     if self.address:
-        fields.append(search.GeoField(name='location', value=search.GeoPoint(self.location.latitude, self.location.longitude)))
+        fields.append(search.GeoField(name='location', value=search.GeoPoint(self.location.lat, self.location.lon)))
     
     doc = search.Document(
         doc_id = self.key.urlsafe(), 

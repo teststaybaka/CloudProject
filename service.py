@@ -4,12 +4,11 @@ def getGeolocation(address):
     param = urllib.urlencode({'key': API_KEY, 'address': address})
     req = urllib2.urlopen("https://maps.googleapis.com/maps/api/geocode/json?"+param)
     res = json.load(req)
-
-    if res.status != 'OK':
-        logging.info('Geo api requested', res.status)
+    if res['status'] != 'OK':
+        logging.info('Geo api requested failed')
+        raise ValueError(res['status'])
     else:
-        logging.info('Geo results')
-        logging.info(res.results)
+        return res['results']
 
 class MyServices(BaseHandler):
     @login_required
@@ -44,14 +43,13 @@ class SearchServices(BaseHandler):
         address = self.request.get('address')
         if address:
             try:
-                latitude = self.request.get('latitude')
-                longitude = self.request.get('longitude')
+                loc_results = getGeolocation(self.address)
+                self.latitude = loc_results[0]['geometry']['location']['lat']
+                self.longitude = loc_results[0]['geometry']['location']['lng']
                 distance = self.request.get('distance')
-                t = float(latitude)
-                t = float(longitude)
                 t = float(distance)
             except ValueError:
-                self.redirect(self.render('notify', {'message': 'Latitude, longitude or distance invalid.'}))
+                self.redirect(self.render('notify', {'message': 'Address or distance invalid.'}))
                 return
 
             query_string += ' AND distance(location, geopoint('+latitude+', '+longitude+')) < '+distance
@@ -81,17 +79,6 @@ class ServiceHandle(BaseHandler):
         self.render('serviceModify', {'service': service})
 
     def check_params(self):
-        self.address = self.request.get('address')
-        if self.address:
-            try:
-                self.latitude = float(self.request.get('latitude'))
-                self.longitude = float(self.request.get('longitude'))
-                self.location = ndb.GeoPt(self.latitude, self.longitude)
-            except ValueError:
-                raise ValueError('Latitude or longitude not valid.')
-        else:
-            self.location = None
-
         self.title = self.request.get('title')
         if not self.title:
             raise ValueError('Title is empty.')
@@ -118,11 +105,22 @@ class ServiceHandle(BaseHandler):
             self.times = int(self.request.get('times'))
         except ValueError:
             raise ValueError('Invalid times.')
-
         
         self.kind = self.request.get('kind')
         if self.kind not in ["request", "offer"]:
             raise ValueError('Invalid kind.')
+
+        self.address = self.request.get('address')
+        if self.address:
+            try:
+                loc_results = getGeolocation(self.address)
+                self.latitude = loc_results[0]['geometry']['location']['lat']
+                self.longitude = loc_results[0]['geometry']['location']['lng']
+                self.location = ndb.GeoPt(self.latitude, self.longitude)
+            except ValueError:
+                raise ValueError('Address invalid.')
+        else:
+            self.location = None
 
     @login_required_json
     def add_post(self):

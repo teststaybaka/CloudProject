@@ -91,7 +91,7 @@ class Service(BaseHandler):
         if not self.available_time:
             raise ValueError('Not specify available time.')
 
-        self.service_tags = self.request.POST.getall('service_tags[]')
+        self.service_tags = self.request.get('service_tags').split(",")
         if not self.service_tags:
             raise ValueError('No tags specified.')
 

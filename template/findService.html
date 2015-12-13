@@ -1,0 +1,87 @@
+{% extends "template/base.html" %}
+{% block head %}
+{{ super() }}
+<!-- <script src="/assets/serviceAdd.min.js"></script> -->
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+	<div class="row">
+    	<div class="col-md-5">
+
+			<form class="add-service-form form-horizontal col-md-12" method="GET" action="" style="border: 1px solid rgb(200,200,200); border-radius: 5px; margin-top: 100px; padding-top: 40px; padding-bottom: 40px; box-shadow: 4px 4px 3px rgb(200,200,200);">
+			    <h3 style="text-align: center; margin-top: 10px; margin-bottom: 20px;">Search A Service</h3>
+			    
+			    <div class="form-group">
+			        <label class="control-label col-md-2">Keywords: </label>
+			        <div class="col-md-10">
+			            <input class="form-control" type="search" name="keywords" placeholder="Enter any keywords here">
+			        </div>
+			    </div>
+			    <div class="form-group">
+			        <label class="control-label col-md-2">Status: </label>
+			        <div class="col-md-10">
+			            <select class = "form-control" name = "status">
+						  <option value="available">available</option>
+						  <option value="in progress">in progress</option>
+						  <option value="cancelled">cancelled</option>
+						  <option value="completed">completed</option>
+						</select>
+			        </div>
+			    </div>
+			    <div class="form-group">
+			        <label class="control-label col-md-2">Price Min: </label>
+			        <div class="col-md-10">
+			            <input class="form-control" type="text" name="price_min" placeholder="USD">
+			        </div>
+			    </div>
+			    <div class="form-group">
+			        <label class="control-label col-md-2">Price Max: </label>
+			        <div class="col-md-10">
+			            <input class="form-control" type="text" name="price_max" placeholder="USD">
+			        </div>
+			    </div>
+			     <div class="form-group">
+			        <label class="control-label col-md-2">Address: </label>
+			        <div class="col-md-10">
+			            <input class="form-control" type="text" name="address" placeholder="If the service needs an address.">
+			        </div>
+			    </div>
+			    <div class="form-group">
+			        <div class="col-md-12">
+			            <input class="btn btn-primary pull-right" type="submit" value="Search">
+			        </div>
+			    </div>
+			</form>
+
+		</div>
+
+		<div class="col-md-7">
+			<table class='table' style = 'margin-top: 100px'>
+			<thead >
+				<th>Search Results</th>
+			</thead>
+
+			<tbody>
+				<h1 style = 'margin-top: 100px'>hello</h1>
+				{% for service in services %}
+					<tr>	
+					<td style="width:160px; height:160px;">
+						<div class = 'search_entry'>
+							<a href="">{{ service.title }}</a>
+							<p>{{ service.creator }}</p>
+							<p>{{ service.price }}</p>
+							<p>{{ service.description }}</p>
+						</div>
+					</td>	
+					</tr>	
+
+				{% endfor %}
+			</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

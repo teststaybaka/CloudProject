@@ -7,6 +7,8 @@ routes = [
     webapp2.Route(r'/signin', views.Signin, name="signin"),
     webapp2.Route(r'/signout', views.Signout, name="signout"),
     
+    webapp2.Route(r'/my/services', service.MyServices, name="my_services"),
+    webapp2.Route(r'/search', service.SearchServices, name="search_services"),
     webapp2.Route(r'/service/add', service.servicePost, name="add_service", handler_method='add'),
     webapp2.Route(r'/service/add/post', service.servicePost, name="add_service_post", handler_method='add_post'),
     webapp2.Route(r'/service/<service_id:\d+>/modify', service.servicePost, name="modify_service", handler_method='modify'),

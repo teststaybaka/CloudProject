@@ -155,7 +155,6 @@ class Progress(BaseHandler):
         proposal.put()
         self.json_response(False)
 
-
 class FinishProposal(BaseHandler):
     @login_required_json
     def post(self, proposal_id):

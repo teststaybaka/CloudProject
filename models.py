@@ -76,7 +76,7 @@ class Service(ndb.Model):
   times = ndb.IntegerProperty(required=True, default=1, indexed=False)
   available_time = ndb.StringProperty(indexed=False)
   service_tags = ndb.StringProperty(repeated=True, indexed=False)
-  status = ndb.StringProperty(required=True, default='available', choices=['available', 'handling', 'cancelled', 'completed'])
+  status = ndb.StringProperty(required=True, default='available', choices=['available', 'in progress', 'cancelled', 'completed'])
   kind = ndb.StringProperty(required=True, choices=['offer', 'request'])
   # rates = ndb.FloatProperty()
   created = ndb.DateTimeProperty(auto_now_add=True)
@@ -111,7 +111,7 @@ class Proposal(ndb.Model):
   status = ndb.StringProperty(required=True, default='pending', choices=['pending', 'accepted', 'declined', 'finished', 'confirmed'])
   last_message = ndb.TextProperty()
   kind = ndb.StringProperty(required=True, choices=['offer', 'request'])
-  created = ndb.DateTimeProperty(auto_now_add=True)
+  updated = ndb.DateTimeProperty(auto_now_add=True)
 
 class Message(ndb.Model):
   sender = ndb.KeyProperty(kind='User', indexed=False)

@@ -3,13 +3,13 @@ from views import*
 class MyProposals(BaseHandler):
     @login_required
     def get(self):
-        proposals = Proposal.query(Proposal.requestor==self.user_key).order(-Proposal.created).fetch()
+        proposals = Proposal.query(Proposal.requestor==self.user_key).order(-Proposal.updated).fetch()
         self.render('myrequests', {'proposals': proposals})
 
 class ReceivedProposals(BaseHandler):
     @login_required
     def get(self):
-        proposals = Proposal.query(Proposal.decider==self.user_key).order(-Proposal.created).fetch()
+        proposals = Proposal.query(Proposal.decider==self.user_key).order(-Proposal.updated).fetch()
         self.render('myreceives', {'receives': proposals})
 
 class Propose(BaseHandler):
@@ -84,6 +84,7 @@ class Conversation(BaseHandler):
         text = self.request.get('message')
         message = Message(parent=proposal.key, sender=self.user_key, receiver=receiver, text=text)
         proposal.last_message = text
+        proposal.updated = datetime.now()
         ndb.put_multi((message, proposal))
         self.json_response(False)
 
@@ -110,6 +111,7 @@ class Conversation(BaseHandler):
         text = 'The proposal has been modified. Please check it!'
         message = Message(parent=proposal.key, sender=self.user_key, receiver=proposal.decider, text=text)
         proposal.last_message = text
+        proposal.updated = datetime.now()
         ndb.put_multi((message, proposal))
         self.json_response(False)
 
@@ -122,7 +124,10 @@ class DeclineProposal(BaseHandler):
             return
 
         proposal.status = 'declined'
-        proposal.put()
+        text = 'The proposal has been declined. Don\' get frustrated!'
+        message = Message(parent=proposal.key, sender=self.user_key, receiver=proposal.requestor, text=text)
+        proposal.last_message = text;
+        ndb.put_multi((message, proposal))
         self.json_response(False)
 
 class AcceptProposal(BaseHandler):
@@ -139,8 +144,11 @@ class AcceptProposal(BaseHandler):
             return
 
         proposal.status = 'accepted'
-        service.status = 'handling'
-        ndb.put_multi((service, proposal))
+        text = 'Congratulation! The proposal has been accpted.'
+        message = Message(parent=proposal.key, sender=self.user_key, receiver=proposal.requestor, text=text)
+        proposal.last_message = text
+        proposal.updated = datetime.now()
+        ndb.put_multi((service, proposal, message))
         self.json_response(False)
 
 class Progress(BaseHandler):
@@ -152,9 +160,15 @@ class Progress(BaseHandler):
             return
 
         proposal.progress += 1
+        proposal.updated = datetime.now()
         if proposal.progress == proposal.times:
             proposal.status = 'finished'
-        proposal.put()
+            text = 'Yeah! Your request is finished!'
+            message = Message(parent=proposal.key, sender=self.user_key, receiver=proposal.requestor, text=text)
+            proposal.last_message = text
+            ndb.put_multi((proposal, message))
+        else:
+            proposal.put()
         self.json_response(False)
 
 class ConfirmProgress(BaseHandler):
@@ -166,7 +180,13 @@ class ConfirmProgress(BaseHandler):
             return
 
         proposal.confirmed_progress = proposal.progress
+        proposal.updated = datetime.now()
         if proposal.progress == progress.times:
             proposal.status = 'confirmed'
-        proposal.put()
+            text = 'Congratulation! Everything is done!'
+            message = Message(parent=proposal.key, sender=self.user_key, receiver=proposal.decider, text=text)
+            proposal.last_message = text
+            ndb.put_multi((proposal, message))
+        else:
+            proposal.put()
         self.json_response(False)

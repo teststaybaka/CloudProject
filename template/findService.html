@@ -66,12 +66,11 @@
 			<tbody>
 				{% for service in services %}
 					<tr>	
-					<td style="width:160px; height:160px;">
+					<td style="width:100px; height:100px;">
 						<div class = 'search_entry'>
-							<a href="">{{ service.title }}</a>
-							<p>{{ service.creator }}</p>
-							<p>{{ service.price }}</p>
-							<p>{{ service.description }}</p>
+							<a href="{{ uri_for('service_detail', service_id = service.key.id()) }}">{{ service.title }}</a>
+							<div>price: {{ service.price }}</div>
+							<div>detail: {{ service.description }}</div>
 						</div>
 					</td>	
 					</tr>	

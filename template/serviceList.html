@@ -2,7 +2,6 @@
 {% block head %}
 {{ super() }}
 
-
 <style>
 .panel{
 	margin-top: 50px;
@@ -23,6 +22,18 @@ h1 i{
 	margin-right: 5px;
 	font-size: 19px;
 }
+.completed{
+	 color: green;
+}
+.cancelled{
+	color: red;
+}
+.available{
+	color: black;
+}
+.handling{
+	color: blue;
+}
 </style>
 
 
@@ -42,6 +53,7 @@ h1 i{
 	<td><b>Title</b></td>
 	<td><b>Kind</b></td>
 	<td><b>Description</b></td>
+	<td><b>Status</b></td>
 	<td><b>Options</b></td>
 </tr>
 {% for service in services %}
@@ -53,6 +65,7 @@ h1 i{
         	{% endif %}
         </td>
        	<td>{{ service.description }} </td>	
+       	<td class="{{service.status}}">{{ service.status }} </td>	
        	<td><a href="/service/{{ service.key.id() }}" class="service">More</a>
        		<a class="modify" href="/service/{{ service.key.id() }}/modify" class="service">Modify</a>
        	</td>

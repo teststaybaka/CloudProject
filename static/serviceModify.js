@@ -24,6 +24,24 @@ $(document).ready(function(){
                 return false;
             }
         });
+
+
+	$('.modify-service-form').submit(function(evt) {
+        evt.preventDefault();
+        $.ajax({
+            type: 'POST',
+            data: $(this).serialize(),
+            dataType: 'JSON',
+            url: window.location.href+"/post",
+            success: function(res) {
+                if (res.error) {
+                    console.log(res.message);
+                } else {
+                    window.location.replace('/my/services');
+                }
+            }
+        });
+    });
 });
 
 function split( val ) {

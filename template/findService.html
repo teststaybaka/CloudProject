@@ -69,8 +69,8 @@
 					<td style="width:100px; height:100px;">
 						<div class = 'search_entry'>
 							<a href="{{ uri_for('service_detail', service_id = service.key.id()) }}">{{ service.title }}</a>
-							<p>price: {{ service.price }}</p>
-							<p>detail: {{ service.description }}</p>
+							<div>price: {{ service.price }}</div>
+							<div>detail: {{ service.description }}</div>
 						</div>
 					</td>	
 					</tr>	

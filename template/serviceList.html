@@ -53,8 +53,8 @@ h1 i{
         	{% endif %}
         </td>
        	<td>{{ service.description }} </td>	
-       	<td><a href="/service/{{ service.key.id() }}" class="service">More</a>
-       		<a class="modify" href="/service/{{ service.key.id() }}/modify" class="service">Modify</a>
+       	<td><a href="{{ uri_for('service_detail', service_id=service.key.id()) }}" class="service">More</a>
+       		<a class="modify" href="{{ uri_for('modify_service', service_id=service.key.id()) }}" class="service">Modify</a>
        	</td>
 </tr>
 {% endfor %}

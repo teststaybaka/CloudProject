@@ -16,36 +16,36 @@
 			    <div class="form-group">
 			        <label class="control-label col-md-2">Keywords: </label>
 			        <div class="col-md-10">
-			            <input class="form-control" type="search" name="keywords" placeholder="Enter any keywords here">
+			            <input class="form-control" type="search" name="keywords" placeholder="Enter any keywords here" value="{{ keywords }}">
 			        </div>
 			    </div>
 			    <div class="form-group">
 			        <label class="control-label col-md-2">Status: </label>
 			        <div class="col-md-10">
 			            <select class = "form-control" name = "status">
-						  <option value="available">available</option>
-						  <option value="in progress">in progress</option>
-						  <option value="cancelled">cancelled</option>
-						  <option value="completed">completed</option>
+						  <option value="available" {% if status == 'available' %}selected{% endif %}>available</option>
+						  <option value="in progress" {% if status == 'in progress' %}selected{% endif %}>in progress</option>
+						  <option value="cancelled" {% if status == 'cancelled' %}selected{% endif %}>cancelled</option>
+						  <option value="completed" {% if status == 'completed' %}selected{% endif %}>completed</option>
 						</select>
 			        </div>
 			    </div>
 			    <div class="form-group">
 			        <label class="control-label col-md-2">Price Min: </label>
 			        <div class="col-md-10">
-			            <input class="form-control" type="text" name="price_min" placeholder="USD">
+			            <input class="form-control" type="text" name="price_min" placeholder="USD" value="{{ price_min }}">
 			        </div>
 			    </div>
 			    <div class="form-group">
 			        <label class="control-label col-md-2">Price Max: </label>
 			        <div class="col-md-10">
-			            <input class="form-control" type="text" name="price_max" placeholder="USD">
+			            <input class="form-control" type="text" name="price_max" placeholder="USD" value="{{ price_max }}">
 			        </div>
 			    </div>
 			     <div class="form-group">
 			        <label class="control-label col-md-2">Address: </label>
 			        <div class="col-md-10">
-			            <input class="form-control" type="text" name="address" placeholder="If the service needs an address.">
+			            <input class="form-control" type="text" name="address" placeholder="If the service needs an address." value="{{ address }}">
 			        </div>
 			    </div>
 			    <div class="form-group">
@@ -60,7 +60,7 @@
 		<div class="col-md-7">
 			<table class='table' style = 'margin-top: 100px'>
 			<thead >
-				<th>Search Results</th>
+				<th>Find {{ total_found }} result{% if total_found > 1 %}s{% endif %}</th>
 			</thead>
 
 			<tbody>

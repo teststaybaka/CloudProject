@@ -61,7 +61,17 @@ class SearchServices(BaseHandler):
         total_found = result.number_found
         services = ndb.get_multi([ndb.Key(urlsafe=doc.doc_id) for doc in result.results])
         creators = ndb.get_multi([service.creator for service in services])
-        self.render('findService', {'services': services, 'creators': creators, 'total_found': total_found})
+        context = {'services': services, 'creators': creators, 'total_found': total_found}
+        if keywords:
+            context.update({
+                'keywords': keywords,
+                'status': status,
+                'price_min': price_min,
+                'price_max': price_max,
+                'kind': kind,
+                'address': address
+            })
+        self.render('findService', context)
 
 class ServiceHandle(BaseHandler):
     @login_required

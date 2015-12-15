@@ -1,15 +1,5 @@
 from views import *
 
-def getGeolocation(address):
-    param = urllib.urlencode({'key': API_KEY, 'address': address})
-    req = urllib2.urlopen("https://maps.googleapis.com/maps/api/geocode/json?"+param)
-    res = json.load(req)
-    if res['status'] != 'OK':
-        logging.info('Geo api requested failed')
-        raise ValueError(res['status'])
-    else:
-        return res['results']
-
 class MyServices(BaseHandler):
     @login_required
     def get(self):
@@ -48,7 +38,7 @@ class SearchServices(BaseHandler):
                 longitude = loc_results[0]['geometry']['location']['lng']
                 t = float(distance)
             except ValueError:
-                self.redirect(self.render('notify', {'message': 'Address or distance invalid.'}))
+                self.render('notify', {'message': 'Address or distance invalid.'})
                 return
 
             filters.append('distance(location, geopoint('+str(latitude)+', '+str(longitude)+')) < '+distance)
@@ -107,7 +97,7 @@ class ServiceHandle(BaseHandler):
             raise ValueError('Not specify available time.')
 
         self.service_tags = self.request.get('service_tags').split(",")
-        self.service_tags = [tag for tag in self.service_tags if tag.strip()]
+        self.service_tags = [tag.strip() for tag in self.service_tags if tag.strip()]
         if not self.service_tags:
             raise ValueError('No tags specified.')
 
@@ -175,7 +165,7 @@ class ServiceDetail(BaseHandler):
     def get(self, service_id):
         service = ndb.Key('Service', int(service_id)).get()
         if not service:
-            self.redirect(self.render('notify', {'message': 'Not existed.'}))
+            self.render('notify', {'message': 'Not existed.'})
             return
 
         self.render('serviceDetail', {'service': service, 'creator': service.creator.get()})

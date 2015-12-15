@@ -66,7 +66,7 @@ class Conversation(BaseHandler):
     def get(self, proposal_id):
         proposal = ndb.Key('Proposal', int(proposal_id)).get()
         if not proposal or (self.user_key != proposal.decider and self.user_key != proposal.requestor):
-            self.redirect(self.render('notify', {'message': 'Not allowed.'}))
+            self.render('notify', {'message': 'Not allowed.'})
             return
 
         messages = Message.query(ancestor=proposal.key).order(-Message.created).fetch()

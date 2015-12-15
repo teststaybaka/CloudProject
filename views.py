@@ -221,4 +221,38 @@ class Signout(BaseHandler):
 class Account(BaseHandler):
     @login_required
     def get(self):
-        pass
+        self.render('account_setting')
+
+    @login_required_json
+    def post(self):
+        email = self.request.get('email')
+        phone = self.request.get('phone')
+        address = self.request.get('address')
+        distance = self.request.get('distance')
+        tags = self.request.get('tags').split(',')
+        tags = [tag.strip().lower() for tag in tags if tag.strip()]
+
+        if not EMAIL_REGEX.match(email):
+            self.json_response(True, {'message': 'Email format invalid.'})
+            return
+
+        if address:
+            try:
+                loc_results = getGeolocation(address)
+                latitude = loc_results[0]['geometry']['location']['lat']
+                longitude = loc_results[0]['geometry']['location']['lng']
+                distance = float(distance)
+            except ValueError:
+                self.json_response(True, {'message': 'Address or distance invalid.'})
+                return
+        else:
+            distance = None
+
+        user = self.user_key.get()
+        user.email = email
+        user.phone = phone
+        user.address = address
+        user.distance = distance
+        user.tags = tags
+        user.put()
+        self.json_response(False)

@@ -1,0 +1,47 @@
+{% extends "template/base.html" %}
+{% block head %}
+{{ super() }}
+<script src="/static/settings.js"></script>
+{% endblock %}
+
+{% block body %}
+<div class="col-md-2"></div>
+<form class="change-settings-form form-horizontal col-md-8" method="POST" action="" style="border: 1px solid rgb(200,200,200); border-radius: 5px; margin-top: 100px; padding-top: 40px; padding-bottom: 40px; box-shadow: 4px 4px 3px rgb(200,200,200);">
+    <h3 style="text-align: center; margin-top: 10px; margin-bottom: 20px;">Account settings</h3>
+    <div class="form-group">
+        <label class="control-label col-md-2">Email: </label>
+        <div class="col-md-10">
+            <input class="form-control" type="text" name="email" placeholder="Contact email" value="{{ user.email }}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2">Phone: </label>
+        <div class="col-md-10">
+            <input class="form-control" type="text" name="phone" placeholder="Contact primary phone" value="{{ user.phone }}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2">Preferred address: </label>
+        <div class="col-md-10">
+            <input class="form-control" type="text" name="address" placeholder="Not your contact address" value="{% if user.address %}{{ user.address }}{% endif %}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2">Distance: </label>
+        <div class="col-md-10">
+            <input class="form-control" type="text" name="distance" placeholder="If provided an address, how far from it?" value="{% if user.distance %}{{ user.distance }}{% endif %}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2">Interested tags: </label>
+        <div class="col-md-10">
+            <input class="form-control" type="text" name="tags" placeholder="What are you interested in?" value="{{ ','.join(user.tags) }}">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12">
+            <input class="btn btn-primary pull-right" type="submit" value="Save">
+        </div>
+    </div>
+</form>
+{% endblock %}

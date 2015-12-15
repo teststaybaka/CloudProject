@@ -17,6 +17,16 @@ import json
 def time_to_seconds(time):
   return int((time - datetime(1970, 1, 1)).total_seconds())
 
+def getGeolocation(address):
+  param = urllib.urlencode({'key': API_KEY, 'address': address})
+  req = urllib2.urlopen("https://maps.googleapis.com/maps/api/geocode/json?"+param)
+  res = json.load(req)
+  if res['status'] != 'OK':
+      logging.info('Geo api requested failed')
+      raise ValueError(res['status'])
+  else:
+      return res['results']
+
 EMAIL_REGEX = re.compile(r"^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")
 ILLEGAL_LETTER = re.compile(r"[&@.,?!:/\\\"'<>=]")
 API_KEY = 'AIzaSyBCpSEG3WO0AmUculEWdNYitO_F1Cd05-o'
@@ -28,11 +38,14 @@ class User(ndb.Model):
   firstname = ndb.StringProperty(required=True, indexed=False)
   gender = ndb.StringProperty(required=True, indexed=False)
   auth_id = ndb.StringProperty()
-  # location = ndb.GeoPtProperty(indexed=False)
   email = ndb.StringProperty(indexed=False)
   password = ndb.StringProperty(indexed=False)
   rates = ndb.FloatProperty(indexed=False)
   phone = ndb.StringProperty(indexed=False)
+  location = ndb.GeoPtProperty(indexed=False)
+  address = ndb.StringProperty(indexed=False)
+  distance = ndb.FloatProperty(indexed=False)
+  tags = ndb.StringProperty(repeated=True, indexed=False)
 
   @classmethod
   def Create(cls, lastname, firstname, gender, email, raw_password, phone):

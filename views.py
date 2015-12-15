@@ -230,7 +230,7 @@ class Account(BaseHandler):
         address = self.request.get('address')
         distance = self.request.get('distance')
         tags = self.request.get('tags').split(',')
-        tags = [tag.strip().lower() for tag in tags if tag.strip()]
+        tags = list(set([tag.strip().lower() for tag in tags if tag.strip()]))
 
         if not EMAIL_REGEX.match(email):
             self.json_response(True, {'message': 'Email format invalid.'})
@@ -242,10 +242,12 @@ class Account(BaseHandler):
                 latitude = loc_results[0]['geometry']['location']['lat']
                 longitude = loc_results[0]['geometry']['location']['lng']
                 distance = float(distance)
+                location = ndb.GeoPt(latitude, longitude)
             except ValueError:
                 self.json_response(True, {'message': 'Address or distance invalid.'})
                 return
         else:
+            location = None
             distance = None
 
         user = self.user_key.get()
@@ -253,6 +255,7 @@ class Account(BaseHandler):
         user.phone = phone
         user.address = address
         user.distance = distance
+        user.location = location
         user.tags = tags
         user.put()
         self.json_response(False)

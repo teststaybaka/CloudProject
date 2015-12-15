@@ -1,5 +1,6 @@
 $(document).ready(function() {
-    $('.change-settings-form').submit(function() {
+    $('.change-settings-form').submit(function(evt) {
+        evt.preventDefault();
         $.ajax({
             type: 'POST',
             data: $(this).serialize(),

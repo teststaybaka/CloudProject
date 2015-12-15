@@ -97,7 +97,7 @@ class ServiceHandle(BaseHandler):
             raise ValueError('Not specify available time.')
 
         self.service_tags = self.request.get('service_tags').split(",")
-        self.service_tags = [tag.strip() for tag in self.service_tags if tag.strip()]
+        self.service_tags = [tag.strip().lower() for tag in self.service_tags if tag.strip()]
         if not self.service_tags:
             raise ValueError('No tags specified.')
 

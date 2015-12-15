@@ -92,24 +92,38 @@ def login_required_json(handler):
 class Home(BaseHandler):
     def get(self):
         services = Service.query(Service.creator==self.user_key).order(-Service.created).fetch()
+        # proposals = Proposal.query(Proposal.requestor == self.user_key).fetch()
+        
         tags = set()
-        for service in services:
-            #print "tag!!!:"
-            #print service.service_tags
+        for service in services:            
             for s in service.service_tags:
                 tags.add(s)
-        #tags = ndb.get_multi([service.service_tags for service in services])
-        #print(tags)    
 
-        all_service_with_those_tags=[]
-        for tag in tags:
-            services_with_this_tag = Service.query(Service.service_tags==tag).order(-Service.created).fetch()
-            print "this tag:"+tag
-            print services_with_this_tag
-            for service in services_with_this_tag:
-                all_service_with_those_tags+=[service]
+        logging.info(tags)
+
+        # all_service_with_those_tags=[]
+        # for tag in tags:
+        #     # services_with_this_tag = Service.query(Service.service_tags==tag, Service.creator != self.user_key ).order(Service.creator, -Service.created).fetch()
+        #     services_with_this_tag = Service.query(Service.service_tags==tag).order(-Service.created).fetch()
+        #     for service in services_with_this_tag:
+        #         all_service_with_those_tags+=[service]
 
         #print all_service_with_those_tags
+        user = self.user_key.get()
+        logging.info(user.tags)
+        if user.tags:
+            all_service_with_those_tags = Service.query(Service.service_tags.IN (list(user.tags))).fetch()
+        else:
+            all_service_with_those_tags = Service.query().fetch()
+        # user_tags = self.tags
+        # for tag in user_tags:
+        #     services_with_this_tag = Service.query(Service.service_tags==tag).order(-Service.created).fetch()
+
+        #     # print "this tag:"+tag
+        #     # print services_with_this_tag
+        #     for service in services_with_this_tag:
+        #         all_service_with_those_tags+=[service]
+
         
         all_service_with_those_tags.sort(key=lambda x: x.created, reverse=True)
         non_rep=[]
@@ -121,9 +135,11 @@ class Home(BaseHandler):
                     non_rep+=[curr]
             else:
                 non_rep+=[curr]
-        "TODO: !!! remove service by self."
-      
+
         self.render('index2',{'services':non_rep})
+
+
+
 
 class Signup(BaseHandler):
     def post(self):

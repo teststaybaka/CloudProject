@@ -4,13 +4,17 @@ class MyProposals(BaseHandler):
     @login_required
     def get(self):
         proposals = Proposal.query(Proposal.requestor==self.user_key).order(-Proposal.updated).fetch()
-        self.render('myrequests', {'proposals': proposals})
+        services = ndb.get_multi([proposal.service for proposal in proposals])
+        deciders = ndb.get_multi([proposal.decider for proposal in proposals])
+        self.render('myrequests', {'proposals': proposals, 'services': services, 'deciders': deciders})
 
 class ReceivedProposals(BaseHandler):
     @login_required
     def get(self):
         proposals = Proposal.query(Proposal.decider==self.user_key).order(-Proposal.updated).fetch()
-        self.render('myreceives', {'receives': proposals})
+        services = ndb.get_multi([proposal.service for proposal in proposals])
+        requestors = ndb.get_multi([proposal.requestor for proposal in proposals])
+        self.render('myreceives', {'proposals': proposals, 'services': services, 'requestors': requestors})
 
 class Propose(BaseHandler):
     @login_required

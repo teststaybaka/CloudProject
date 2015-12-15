@@ -60,7 +60,7 @@ class BaseHandler(webapp2.RequestHandler):
         if self.user_key:
             if 'user' not in context:
                 context['user'] = {}
-            context['user'].update(self.user_key.get().to_dict())
+            context['user'].update(self.user_key.get())
 
         self.response.headers['Content-Type'] = 'text/html'
         path = 'template/' + tempname + '.html'

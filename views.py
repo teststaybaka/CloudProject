@@ -218,3 +218,7 @@ class Signout(BaseHandler):
         self.response.set_cookie('user_id', '', path='/', max_age=0)
         self.redirect(self.uri_for('home'))
         
+class Account(BaseHandler):
+    @login_required
+    def get(self):
+        pass

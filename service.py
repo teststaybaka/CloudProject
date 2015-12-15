@@ -19,40 +19,41 @@ class MyServices(BaseHandler):
 class SearchServices(BaseHandler):
     def get(self):
         keywords = self.get_keywords()
-        query_string = ''
+        filters = []
         if keywords:
-            query_string = 'content: '+ keywords
-            
-            status = self.request.get('status')
-            if status:
-                query_string += ' AND status = '+status
+            filters.append('content: '+ keywords)
+        
+        status = self.request.get('status')
+        if status:
+            filters.append('status = '+status)
 
-            price_min = self.request.get('price_min')
-            if price_min:
-                query_string += ' AND price >= '+price_min
+        price_min = self.request.get('price_min')
+        if price_min:
+            filters.append('price >= '+price_min)
 
-            price_max = self.request.get('price_max')
-            if price_max:
-                query_string += ' AND price <= '+price_max
+        price_max = self.request.get('price_max')
+        if price_max:
+            filters.append('price <= '+price_max)
 
-            kind = self.request.get('kind')
-            if kind:
-                query_string += ' AND kind = '+kind
+        kind = self.request.get('kind')
+        if kind:
+            filters.append('kind = '+kind)
 
-            address = self.request.get('address')
-            if address:
-                try:
-                    loc_results = getGeolocation(self.address)
-                    self.latitude = loc_results[0]['geometry']['location']['lat']
-                    self.longitude = loc_results[0]['geometry']['location']['lng']
-                    distance = self.request.get('distance')
-                    t = float(distance)
-                except ValueError:
-                    self.redirect(self.render('notify', {'message': 'Address or distance invalid.'}))
-                    return
+        address = self.request.get('address')
+        distance = self.request.get('distance')
+        if address:
+            try:
+                loc_results = getGeolocation(address)
+                latitude = loc_results[0]['geometry']['location']['lat']
+                longitude = loc_results[0]['geometry']['location']['lng']
+                t = float(distance)
+            except ValueError:
+                self.redirect(self.render('notify', {'message': 'Address or distance invalid.'}))
+                return
 
-                query_string += ' AND distance(location, geopoint('+latitude+', '+longitude+')) < '+distance
+            filters.append('distance(location, geopoint('+str(latitude)+', '+str(longitude)+')) < '+distance)
 
+        query_string = ' AND '.join(filters)
         options = search.QueryOptions(limit=20, ids_only=True)
         query = search.Query(query_string=query_string, options=options)
         index = search.Index(name='services_by_created')
@@ -62,15 +63,15 @@ class SearchServices(BaseHandler):
         services = ndb.get_multi([ndb.Key(urlsafe=doc.doc_id) for doc in result.results])
         creators = ndb.get_multi([service.creator for service in services])
         context = {'services': services, 'creators': creators, 'total_found': total_found}
-        if keywords:
-            context.update({
-                'keywords': keywords,
-                'status': status,
-                'price_min': price_min,
-                'price_max': price_max,
-                'kind': kind,
-                'address': address
-            })
+        context.update({
+            'keywords': keywords,
+            'status': status,
+            'price_min': price_min,
+            'price_max': price_max,
+            'kind': kind,
+            'address': address,
+            'distance': distance,
+        })
         self.render('findService', context)
 
 class ServiceHandle(BaseHandler):

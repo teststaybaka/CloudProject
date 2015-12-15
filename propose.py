@@ -40,6 +40,8 @@ class Propose(BaseHandler):
         except ValueError:
             price = 0
 
+        notes = self.request.get('notes');
+
         proposal = Proposal(decider=service.creator, requestor=self.user_key, service=service.key, kind=service.kind, price=price, times=times)
         proposal.put()
 
@@ -49,7 +51,11 @@ class Propose(BaseHandler):
             text += 'take your service. '
         else:
             text += 'offer you a service. '
+
         text += 'Are you interested?'
+
+        text += '\nAdditionally, '+service.creator.get().firstname+' says "' + notes +'"'
+
         message = Message(parent=proposal.key, sender=self.user_key, receiver=service.creator, text=text)
         proposal.last_message = text
         ndb.put_multi((message, proposal))

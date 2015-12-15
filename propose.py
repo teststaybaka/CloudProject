@@ -45,8 +45,10 @@ class Propose(BaseHandler):
         proposal = Proposal(decider=service.creator, requestor=self.user_key, service=service.key, kind=service.kind, price=price, times=times)
         proposal.put()
 
-        text = 'Hi '+service.creator.get().firstname+',\n'
-        text += self.user_key.get().firstname+'is requesting to '
+        creator, user = ndb.get_multi((service.creator, self.user_key))
+
+        text = 'Hi '+creator.firstname+',\n'
+        text += user.firstname+' is requesting to '
         if service.kind == 'offer':
             text += 'take your service. '
         else:
@@ -54,7 +56,7 @@ class Propose(BaseHandler):
 
         text += 'Are you interested?'
 
-        text += '\nAdditionally, '+service.creator.get().firstname+' says "' + notes +'"'
+        text += '\nAdditionally, '+user.firstname+' says "' + notes +'"'
 
         message = Message(parent=proposal.key, sender=self.user_key, receiver=service.creator, text=text)
         proposal.last_message = text

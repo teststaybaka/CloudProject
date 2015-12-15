@@ -61,7 +61,17 @@ $(document).ready(function(){
 {% block body %}
 <div class="panel panel-default">
   <!-- Default panel contents -->
-  <div class="panel-heading"><h1 class="panel-title"><i class="glyphicon glyphicon-list"></i>My Services</h1></div>
+  <div class="panel-heading">
+    <h1 class="panel-title dropdown">
+        <button class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: white; margin: 0; padding: 0;"><i class="glyphicon glyphicon-list"></i></button>
+        <span>My Services</span>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li><a href="{{ uri_for('my_services') }}">My services</a></li>
+            <li><a href="{{ uri_for('my_proposal') }}">My proposals</a></li>
+            <li><a href="{{ uri_for('my_receives') }}">Received proposals</a></li>
+        </ul>
+    </h1>
+  </div>
   <div class="panel-body">
     <p>Here is a brief listing of your services</p>
   </div>

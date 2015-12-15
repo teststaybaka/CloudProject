@@ -10,6 +10,18 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
+- kind: Proposal
+  properties:
+  - name: decider
+  - name: updated
+    direction: desc
+
+- kind: Proposal
+  properties:
+  - name: requestor
+  - name: updated
+    direction: desc
+
 - kind: Service
   properties:
   - name: creator

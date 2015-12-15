@@ -21,3 +21,10 @@ indexes:
   - name: service_tags
   - name: created
     direction: desc
+
+- kind: Service
+  properties:
+  - name: service_tags
+  - name: creator
+  - name: created
+    direction: desc

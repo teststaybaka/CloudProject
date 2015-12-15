@@ -6,6 +6,7 @@ routes = [
     webapp2.Route(r'/signup', views.Signup, name="signup"),
     webapp2.Route(r'/signin', views.Signin, name="signin"),
     webapp2.Route(r'/signout', views.Signout, name="signout"),
+    webapp2.Route(r'/settings', views.Account, name="account"),
     
     webapp2.Route(r'/my/services', service.MyServices, name="my_services"),
     webapp2.Route(r'/search', service.SearchServices, name="search_services"),

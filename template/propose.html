@@ -1,0 +1,65 @@
+{% extends "template/base.html" %}
+{% block head %}
+{{ super() }}
+<script>
+    $(document).ready(function(){
+        $(".propose-service-form").submit(function(evt){
+            evt.preventDefault();
+            $.ajax({
+                type: 'POST',
+                data: $(this).serialize(),
+                dataType: 'JSON',
+                url: "/service/{{ service.key.id() }}/propose",
+                success: function(res) {
+                    if (res.error) {
+                        console.log(res.message);
+                    } else {
+                        window.location.replace('/');
+                    }
+                }
+            });
+        });
+    });
+</script>
+<style>
+    .ui-menu{
+        color: grey;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        border-color: #9ecaed;
+        box-shadow: 0 0 10px #9ecaed;
+    }   
+
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="col-md-2"></div>
+<form class="propose-service-form form-horizontal col-md-8" method="POST" action="" style="border: 1px solid rgb(200,200,200); border-radius: 5px; margin-top: 100px; padding-top: 40px; padding-bottom: 40px; box-shadow: 4px 4px 3px rgb(200,200,200);">
+    <h3 style="text-align: center; margin-top: 10px; margin-bottom: 20px;">Make a proposition!</h3>
+    <p style="text-align: center;">You're in negotiation for <a href="{{ uri_for('service_detail', service_id=service.key.id()) }}">{{ service.title }}</a> by {{ service.creator.get().firstname }} {{ service.creator.get().lastname }} </p>
+    <div class="form-group">
+        <label class="control-label col-md-2">Your buying price: </label>
+        <div class="col-md-10">
+            <input class="form-control" type="text" name="price" placeholder="{{ service.creator.get().firstname}} is asking for {{ service.price }}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2">Quantity: </label>
+        <div class="col-md-10">
+            <input class="form-control" type="text" name="times" placeholder="How often would you like this service?">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2">Additonal Notes: </label>
+        <div class="col-md-10">
+            <textarea class="form-control" type="text" name="notes" placeholder="Anything else you'd like to mention" style="min-height: 100px;"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12">
+            <input class="btn btn-primary pull-right" type="submit" value="Propose">
+        </div>
+    </div>
+</form>
+{% endblock %}

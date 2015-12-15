@@ -5,6 +5,22 @@
 
 {% block body %}
 <!-- Main jumbotron for a primary marketing message or call to action -->
+<style type="text/css">
+    body {
+      background-image: url("/images/intro.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      height: 100%;
+      overflow: auto;
+    }
+    .jumbotron{
+      background-color: rgba(238,238,238,0);
+    }
+    .background-color{
+      background-color: rgba(238,238,238,0.3);
+    }
+</style>
+<div class = "background-color">
 <div class="jumbotron">
   <div class="container">
     <h1>Hands For You</h1>
@@ -73,5 +89,6 @@
 
   <footer>
     <p>Cloud Computing Final Project, 2015/12</p>
-</div> <!-- /container -->
+</div> 
+</div><!-- /container -->
 {% endblock %}

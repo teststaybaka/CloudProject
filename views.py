@@ -92,7 +92,39 @@ def login_required_json(handler):
 
 class Home(BaseHandler):
     def get(self):
-        self.render('index2')
+        services = Service.query(Service.creator==self.user_key).order(-Service.created).fetch()
+        tags = set()
+        for service in services:
+            #print "tag!!!:"
+            #print service.service_tags
+            for s in service.service_tags:
+                tags.add(s)
+        #tags = ndb.get_multi([service.service_tags for service in services])
+        #print(tags)    
+
+        all_service_with_those_tags=[]
+        for tag in tags:
+            services_with_this_tag = Service.query(Service.service_tags==tag).order(-Service.created).fetch()
+            print "this tag:"+tag
+            print services_with_this_tag
+            for service in services_with_this_tag:
+                all_service_with_those_tags+=[service]
+
+        #print all_service_with_those_tags
+        
+        all_service_with_those_tags.sort(key=lambda x: x.created, reverse=True)
+        non_rep=[]
+        for i in range(0,len(all_service_with_those_tags)):
+            curr=all_service_with_those_tags[i]
+            if i>0:
+                prev=all_service_with_those_tags[i-1]
+                if curr!=prev:
+                    non_rep+=[curr]
+            else:
+                non_rep+=[curr]
+        "TODO: !!! remove service by self."
+      
+        self.render('index2',{'services':non_rep})
 
 class Signup(BaseHandler):
     def post(self):

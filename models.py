@@ -75,7 +75,7 @@ class Service(ndb.Model):
   price = ndb.IntegerProperty(indexed=False)
   times = ndb.IntegerProperty(required=True, default=1, indexed=False)
   available_time = ndb.StringProperty(indexed=False)
-  service_tags = ndb.StringProperty(repeated=True, indexed=False)
+  service_tags = ndb.StringProperty(repeated=True, indexed=True)
   status = ndb.StringProperty(required=True, default='available', choices=['available', 'in progress', 'cancelled', 'completed'])
   kind = ndb.StringProperty(required=True, choices=['offer', 'request'])
   # rates = ndb.FloatProperty()

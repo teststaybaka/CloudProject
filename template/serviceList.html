@@ -6,11 +6,11 @@
 .panel{
 	margin-top: 50px;
 }
-.modify:before{
+/*.detail:after{
 	content: "|";
-	margin-right: 2px;
+	margin-left: 5px;
 	color: #337ab7;
-}
+}*/
 td{
  	max-width:200px; 
  	overflow-wrap: break-word;
@@ -36,6 +36,23 @@ h1 i{
 }
 </style>
 
+<script>
+$(document).ready(function(){
+	$(".cancel").click(function(evt){
+		var service_id = $(this).attr("num")
+		evt.preventDefault();
+		var r = confirm("Are you sure you would like to cancel this service?");
+		if (r == true){
+			$.post("/service/" + service_id+ "/cancel", function(resp){
+				if(resp.error)
+					console.log(resp.message);
+				else
+					window.location.href="/my/services";
+			});
+		}
+	});
+});				
+</script>
 
 {% endblock %}
 {% block body %}
@@ -51,7 +68,7 @@ h1 i{
 <tr>
 	<td><b>#</b></td>
 	<td><b>Title</b></td>
-	<td><b>Kind</b></td>
+	<td><b>Type</b></td>
 	<td><b>Description</b></td>
 	<td><b>Status</b></td>
 	<td><b>Options</b></td>
@@ -66,8 +83,16 @@ h1 i{
         </td>
        	<td>{{ service.description }} </td>	
        	<td class="{{service.status}}">{{ service.status }} </td>	
-       	<td><a href="{{ uri_for('service_detail', service_id=service.key.id()) }}" class="service">More</a>
-       		<a class="modify" href="{{ uri_for('modify_service', service_id=service.key.id()) }}" class="service">Modify</a>
+       	<td><!-- <a href="{{ uri_for('service_detail', service_id=service.key.id()) }}" class="service">More</a> -->
+       		<a class="btn btn-success detail " href="{{ uri_for('service_detail', service_id = service.key.id()) }}">View Details</a>
+       		{% if service.status == "available" %}
+
+       		<a class="btn btn-primary" href="{{ uri_for('modify_service', service_id=service.key.id()) }}" class="service">Modify</a>
+       		
+       		<a num="{{ service.key.id() }}" class="btn btn-danger cancel" type="submit" style="margin-right: 5px;" method="POST">Cancel Service</a>
+
+       		{% endif %}
+
        	</td>
 </tr>
 {% endfor %}

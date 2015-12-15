@@ -4,22 +4,6 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script src="/static/serviceModify.js"></script>
-<script>
-	$(document).ready(function(){
-		$("#cancel").click(function(evt){
-			evt.preventDefault();
-			var r = confirm("Are you sure you would like to cancel this service?");
-			if (r == true){
-				$.post("/service/{{ service.key.id() }}/cancel", function(resp){
-					if(resp.error)
-						console.log(resp.message);
-					else
-						window.location.href="/my/services";
-				});
-			}
-		});
-	});
-</script>
 
 {% endblock %}
 {% block body %}
@@ -88,8 +72,9 @@
     </div>
     <div class="form-group">
         <div class="col-md-12">
-            <input class="btn btn-primary pull-right" type="submit" value="Save">
-            <!--<a id="cancel" href="#" class="btn btn-primary pull-right" type="submit" style="margin-right: 5px;" method="POST">Cancel</a>-->
+            <!-- <input class="btn btn-warning pull-right" id="cancel" type="button" value="Cancel"> -->
+            <input class="btn btn-primary pull-right" style="margin-right:10px"type="submit" value="Save">
+            <!-- <a id="cancel" href="#" class="btn btn-primary pull-right" type="submit" style="margin-right: 5px;" method="POST">Cancel</a> -->
         </div>
     </div>
 </form>

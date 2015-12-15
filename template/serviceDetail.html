@@ -1,0 +1,28 @@
+{% extends "template/base.html" %}
+{% block head %}
+{{ super() }}
+<!-- <script src="/assets/serviceAdd.min.js"></script> -->
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+
+<h2 style="margin-top: 100px">{{ service.title }}</h2>
+<h4>price: {{ service.price }}</h4>
+<h4>available time: {{ service.available_time }}</h4>
+<h4>times: {{ service.times }}</h4>
+<h4>location: {{ service.location }}</h4>
+<h4>type: {{ service.kind }}</h4>
+<h4>service_tags: {% for service_tag in service.service_tags %} {{ service_tag }} {% endfor %}</h4>
+<h4>status: {{ service.status }}</h4>
+<p>description: {{ service.description }}</p>
+
+{% if service.status == "available" and user.key.id() == creator.key.id() %}
+
+	<a href="{{ uri_for('my_services') }}">Make Change</a>
+	
+{% endif %}
+
+</div>
+{% endblock %}

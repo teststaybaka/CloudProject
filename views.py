@@ -109,10 +109,13 @@ class Home(BaseHandler):
         #         all_service_with_those_tags+=[service]
 
         #print all_service_with_those_tags
-        user = self.user_key.get()
-        logging.info(user.tags)
-        if user.tags:
-            all_service_with_those_tags = Service.query(Service.service_tags.IN (list(user.tags))).fetch()
+        if self.user_key:
+            user = self.user_key.get()
+            logging.info(user.tags)
+            if user.tags:
+                all_service_with_those_tags = Service.query(Service.service_tags.IN (list(user.tags))).fetch()
+            else:
+                all_service_with_those_tags = Service.query().fetch()
         else:
             all_service_with_those_tags = Service.query().fetch()
         # user_tags = self.tags

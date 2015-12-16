@@ -10,6 +10,12 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
+- kind: Message
+  ancestor: yes
+  properties:
+  - name: created
+    direction: desc
+
 - kind: Proposal
   properties:
   - name: decider
@@ -40,3 +46,9 @@ indexes:
   - name: creator
   - name: created
     direction: desc
+
+- kind: Service
+  properties:
+  - name: service_tags
+  - name: status
+  - name: creator

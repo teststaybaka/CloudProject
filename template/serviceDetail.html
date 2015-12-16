@@ -2,10 +2,22 @@
 {% block head %}
 {{ super() }}
 <!-- <script src="/assets/serviceAdd.min.js"></script> -->
+<style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        width: 500px;
+        height: 400px;
+      }
+    </style>
 {% endblock %}
 
 {% block body %}
 
+<div class="col-md-5">
 <div class="container">
 
 <h2 style="margin-top: 100px">{{ service.title }}</h2>
@@ -18,6 +30,7 @@
 <h4>status: {{ service.status }}</h4>
 <p>description: {{ service.description }}</p>
 
+
 {% if service.status == "available" %} 
 	{% if user.key.id() == creator.key.id() %}
 		<a href="{{ uri_for('my_services') }}">Make Change</a>
@@ -27,4 +40,30 @@
 {% endif %}
 
 </div>
+</div>
+
+<div class="col-md-7">
+<div id="map"></div>
+    <script>
+    function initMap() {
+      var lat = {{ service.location.lat }};
+      var lon = {{ service.location.lon }};
+      var home = new google.maps.LatLng(lat, lon);
+      var map = new google.maps.Map(document.getElementById('map'), {
+        center: home,
+        zoom: 12
+      });
+      var marker = new google.maps.Marker({
+    	position: home,
+    	map: map,
+    	title: 'Service Marker'
+  		});
+      marker.setMap(map);
+    }
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXLFKSBVsRb72s0vyjo9p6zWpNpBGU8Bs&callback=initMap"
+        async defer></script>
+</div>
+
 {% endblock %}

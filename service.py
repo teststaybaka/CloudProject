@@ -166,6 +166,7 @@ class ServiceHandle(BaseHandler):
         self.json_response(False)
 
 class ServiceDetail(BaseHandler):
+    @login_required
     def get(self, service_id):
         service = ndb.Key('Service', int(service_id)).get()
         if not service:

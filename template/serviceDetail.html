@@ -33,12 +33,14 @@
 <p>description: {{ service.description }}</p>
 
 
-{% if service.status == "available" %} 
-	{% if user.key.id() == creator.key.id() %}
-		<a href="{{ uri_for('my_services') }}">Make Change</a>
-	{% else %}
-		<a href="{{ uri_for('propose', service_id=service.key.id()) }}">Propose</a>
-	{% endif %}
+{% if service.status == "available" %}
+    {% if user %}
+    	{% if user.key.id() == creator.key.id() %}
+    	<a href="{{ uri_for('my_services') }}">Make Change</a>
+    	{% else %}
+    	<a href="{{ uri_for('propose', service_id=service.key.id()) }}">Propose</a>
+    	{% endif %}
+    {% endif %}
 {% endif %}
 
 </div>

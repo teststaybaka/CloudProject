@@ -23,6 +23,9 @@ wss.on('connection', function(ws) {
         var clients = channels[proposal_id];
         var index = clients.indexOf(ws);
         clients.splice(index, 1);
+        if (clients.length === 0) {
+            delete channels[proposal_id];
+        }
     });
 });
 

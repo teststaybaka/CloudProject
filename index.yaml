@@ -55,6 +55,14 @@ indexes:
 
 - kind: Service
   properties:
+  - name: service_tags
+  - name: status
+  - name: creator
+  - name: created
+    direction: desc
+
+- kind: Service
+  properties:
   - name: status
   - name: created
     direction: desc

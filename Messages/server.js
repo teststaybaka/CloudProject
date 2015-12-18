@@ -11,6 +11,7 @@ wss.on('connection', function(ws) {
     }
 
     var proposal_id = matched[1];
+    console.log('New connection with '+proposal_id);
     if (!(proposal_id in channels)) {
         channels[proposal_id] = [];
     }
@@ -26,6 +27,7 @@ wss.on('connection', function(ws) {
         if (clients.length === 0) {
             delete channels[proposal_id];
         }
+        console.log('Close connection on '+proposal_id);
     });
 });
 

@@ -62,16 +62,16 @@ $(document).ready(function() {
 
 
 {% if user %}
-    {% if user.key.id() != creator.key.id() and service.status == 'available' %}
+    {% if user.key != creator.key and service.status == 'available' %}
     <a href="{{ uri_for('propose', service_id=service.key.id()) }}">Propose</a>
-    {% elif user.key.id() == creator.key.id() %}
+    {% elif user.key == creator.key %}
         {% if service.status == 'available' %}
         <button type="button" class="btn btn-default status-change" data-status="in progress">In progress</button>
         <a class="btn btn-primary" href="{{ uri_for('modify_service', service_id=service.key.id()) }}">Modify info</a>
         <button type="button" class="btn btn-danger status-change" data-status="cancelled">Cancel {% if service.kind == 'offer' %}Service{% else %}Request{% endif %}</button>
         {% elif service.status == 'in progress' %}
-        <button type="button" class="btn btn-default status-change" data-status="available">Available now</button>
-        <button type="button" class="btn btn-success status-change" data-status="completed">Completed</button>
+        <button type="button" class="btn btn-default status-change" data-status="available">Reopen</button>
+        <button type="button" class="btn btn-success status-change" data-status="completed">Complete</button>
         {% endif %}
     {% endif %}
 {% endif %}

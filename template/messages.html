@@ -86,15 +86,12 @@ h4.proposal{
       <tr><td><b>Type:</b></td><td><input class="form-control" type="text" name="kind" value="{{ proposal.kind }}" readonly></td></tr>
       <tr><td><b>Progress:</b></td><td><input class="form-control" style="margin-right: 5px;" type="text" name="progress" value="{{proposal.progress}} / {{ proposal.times }}" readonly> <a class="progress-btn" href="">
 
-        {% if proposal.requestor.get() == user %}
+        {% if proposal.requestor == user.key %}
           {% if proposal.progress == proposal.confirmed_progress %}Waiting for Progress...
           {% else %}Confirm Progress
           {% endif %}
-        {% endif %}
-        {% if proposal.decider.get() == user %}
-          {% if proposal.progress == proposal.confirmed_progress %}Make Progress
-          {% else %}Waiting for confirmation...
-          {% endif %}
+        {% else %}
+            Make Progress
         {% endif %}
       </a></td></tr>
       <tr><td><b>Status:</b></td><td>{{ proposal.status }}</td></tr>
@@ -164,14 +161,16 @@ $('.modify-proposal-form').submit(function(evt) {
 $('.progress-btn').click(function(evt){
   evt.preventDefault();
 
-  {% if proposal.requestor.get() == user %}
+  {% if proposal.requestor == user.key %}
   {% if proposal.progress == proposal.confirmed_progress %}return;
     {% else %}progress('{{ uri_for(confirm_progress, proposal_id=proposal.key.id()) }}',"Waiting for progress...");
     {% endif %}
   {% endif %}
 
-  {% if proposal.decider.get() == user %}
-    {% if proposal.progress == proposal.confirmed_progress %}progress("/proposal/{{ proposal.key.id()}}/progress", "Waiting for confirmation...");
+  {% if proposal.decider == user.key %}
+    {% if proposal.progress <= proposal.times %}
+    progress("/proposal/{{ proposal.key.id()}}/progress", "Make progress");
+    $("input[name='progress']").val("{{ proposal.progress }} / {{ proposal.times }}");
     {% else %}return;
     {% endif %}
   {% endif %}

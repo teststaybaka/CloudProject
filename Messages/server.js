@@ -16,8 +16,8 @@ wss.on('connection', function(ws) {
     }
     channels[proposal_id].push(ws);
 
-    ws.on('message', function(message) {
-        spreadMessage(proposal_id, message);
+    ws.on('message', function(message)) {
+        spreadMessage(proposal_id, ws, message);
     });
     ws.on('close', function() {
         var clients = channels[proposal_id];
@@ -29,9 +29,9 @@ wss.on('connection', function(ws) {
     });
 });
 
-function spreadMessage(proposal_id, message) {
+function spreadMessage(proposal_id, sender, message) {
     var clients = channels[proposal_id];
     for (var i = 0; i < clients.length; i++) {
-        clients[i].send(message);
+        if (clients[i] !== sender) clients[i].send(message);
     }
 }

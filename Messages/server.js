@@ -16,7 +16,7 @@ wss.on('connection', function(ws) {
     }
     channels[proposal_id].push(ws);
 
-    ws.on('message', function(message)) {
+    ws.on('message', function(message) {
         spreadMessage(proposal_id, message);
     });
     ws.on('close', function() {

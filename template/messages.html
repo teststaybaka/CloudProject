@@ -142,13 +142,12 @@ $(function(){
       <tr><td><b>Type:</b></td><td><input class="form-control" type="text" name="kind" value="{{ proposal.kind }}" readonly></td></tr>
       <tr><td><b>Progress:</b></td><td><input class="form-control" style="margin-right: 5px;" type="text" name="progress" value="{{proposal.progress}} / {{ proposal.times }}" readonly> <a class="progress-btn" href="">
 
-        {% if proposal.requestor == user.key %}
-          {% if proposal.progress == proposal.confirmed_progress %}Waiting for Progress...
-          {% else %}Confirm Progress
-          {% endif %}
-        {% else %}
-            Make Progress
-        {% endif %}
+        {% if proposal.requestor == user.key and (proposal.status == "accepted" or  proposal.status == "finished") %}
+        Confirm
+        {%endif %}
+        {% if proposal.decider == user.key and proposal.status == "accepted"%}
+        Make Progress
+        {%endif %}
       </a></td></tr>
             <tr><td><b>Status:</b></td><td>Currently {{ proposal.status }},
           {% if proposal.decider == user.key %}
@@ -248,7 +247,7 @@ $('.decline-btn').click(function(evt){
                 if (res.error) {
                     console.log(res.message);
                 } else {
-                    window.location.replace('/proposal/{{ proposal.key.id() }}');
+                    window.location.reload();
                 }
             }
   }); 
@@ -257,22 +256,16 @@ $('.decline-btn').click(function(evt){
 $('.progress-btn').click(function(evt){
   evt.preventDefault();
 
-  {% if proposal.requestor == user.key %}
-  {% if proposal.progress == proposal.confirmed_progress %}return;
-    {% else %}progress('{{ uri_for("confirm_progress", proposal_id=proposal.key.id()) }}',"Waiting for progress...");
-    {% endif %}
+  {% if proposal.requestor == user.key and (proposal.status == "accepted" or  proposal.status == "finished") %}
+      progress('{{ uri_for("confirm_progress", proposal_id=proposal.key.id()) }}');
   {% endif %}
 
-  {% if proposal.decider == user.key %}
-    {% if proposal.progress <= proposal.times %}
-    progress("/proposal/{{ proposal.key.id()}}/progress", "Make progress");
-    $("input[name='progress']").val("{{ proposal.progress }} / {{ proposal.times }}");
-    {% else %}return;
-    {% endif %}
+  {% if proposal.decider == user.key and proposal.status == "accepted" %}
+    progress("/proposal/{{ proposal.key.id()}}/progress");
   {% endif %}
 });
 
-function progress(url, msg){
+function progress(url){
   $.ajax({
           type: 'POST',
           data: null,
@@ -281,7 +274,7 @@ function progress(url, msg){
               if (res.error) {
                   console.log(res.message);
               } else {
-                  $(".progress-btn").text(msg);
+                  window.location.reload();
               }
           }
   }); 

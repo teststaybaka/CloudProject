@@ -193,7 +193,7 @@ class ConfirmProgress(BaseHandler):
     def post(self, proposal_id):
         proposal = ndb.Key('Proposal', int(proposal_id)).get()
         if not proposal or (proposal.status != 'accepted' and proposal.status != 'finished') or proposal.requestor != self.user_key or proposal.progress <= proposal.confirmed_progress:
-            self.json_response(True, {'message': proposal.progress > proposal.confirmed_progress})
+            self.json_response(True, {'message': 'Invalid request.'})
             return
 
         proposal.confirmed_progress = proposal.progress

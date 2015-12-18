@@ -74,7 +74,7 @@ class Conversation(BaseHandler):
             self.render('notify', {'message': 'Not allowed.'})
             return
 
-        messages = Message.query(ancestor=proposal.key).order(-Message.created).fetch()
+        messages = Message.query(ancestor=proposal.key).order(Message.created).fetch()
         opposite_key = None
         if self.user_key == proposal.decider:
             opposite_key = proposal.requestor

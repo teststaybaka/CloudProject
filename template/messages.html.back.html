@@ -63,62 +63,6 @@ h4.proposal{
 	width: inherit;
 }
 </style>
-
-<script type="text/javascript">
-$(function(){
-	var address = 'ws://104.196.35.247/' + {{ proposal.key.id() }};
-	var ws = new WebSocket(address);
-	var clicked = false;
-	ws.onopen = function() {
-        console.log('Connected');
-        $("#send-message-button").click(function(){
-        	var message = $("#newmessage-body").val();
-		    ws.send(message);
-		  	clicked = true;
-			appendMessage(message);
-
-			$.ajax({
-	            type: 'POST',
-	            data: { message: message },
-	            url: "{{ uri_for('send_message', proposal_id=proposal.key.id()) }}",
-	            success: function(res) {
-	                if (res.error) {
-	                    console.log(res.message);
-	                }
-	            }
-        	});
-			$("#newmessage-body").val('');
-		});
-    };
-	
-	ws.onmessage = function(message) {
-		console.log('Received');
-		appendMessage(message);
-	};
-
-	function appendMessage(msg) {
-		var cell1 = "<div><div class='from'>from<b>";
-		if (clicked) 
-			cell1 += "You"
-		else 
-			cell1 += $("#opposite-firstname").val();
-		cell1 += "</b> to <b>";
-		if (!clicked) 
-			cell1 += "You"
-		else 
-			cell1 += $("#opposite-firstname").val();
-		cell1 += "</b></div>";
-		var cell2 = "<div class='message-text' id='message-content'>" + msg + "</div>";
-		var cell3 = "<i>@" + Date(Date.now()).toString() + "</i>";
-		var cell = cell1 + cell2 + cell3;
-		console.log(cell);
-		$('#message-list').append(cell);
-		clicked = false;
-	}
-})	
-</script>
-
-
 {% endblock %}
 
 {% block body %}
@@ -150,7 +94,7 @@ $(function(){
             Make Progress
         {% endif %}
       </a></td></tr>
-            <tr><td><b>Status:</b></td><td>Currently {{ proposal.status }},
+      <tr><td><b>Status:</b></td><td>Currently {{ proposal.status }},
           {% if proposal.decider == user.key %}
             {% if proposal.status == "pending" %}<a href="" class="accept-btn">Accept</a> or <a href="" class="decline-btn">Decline</a>
             {% endif %}
@@ -171,9 +115,7 @@ $(function(){
   <div class="panel-body">
     You have <span>{{ messages|count }}</span> message{% if messages|count > 1 %}s{% endif %}.
   </div>
-  
-  <div class="messages" id="message-list">
-
+  <div class="messages">
     {% for message in messages %}
         <div>
             <div class="from">from 
@@ -194,10 +136,10 @@ $(function(){
     </div>
     <table class="table messages">
         <tr>
-            <td class="center-tags" id="message-body"><textarea id="newmessage-body" rows="5" cols="100" placeholder="Message here"></textarea></td>
+            <td class="center-tags" id="message-body"><textarea rows="5" cols="100" placeholder="Message here"></textarea></td>
         </tr>
         <tr>
-            <td class="center-tags"><button id="send-message-button" class="btn btn-success" type="button">Send</button></td>
+            <td class="center-tags"><a class="btn btn-info" type="submit" method="POST">Send</a></td>
             
         </tr>   
     </table>
@@ -220,6 +162,26 @@ $('.modify-proposal-form').submit(function(evt) {
             }
         });
     });
+
+$('.progress-btn').click(function(evt){
+  evt.preventDefault();
+
+  {% if proposal.requestor == user.key %}
+  {% if proposal.progress == proposal.confirmed_progress %}return;
+    {% else %}progress('{{ uri_for(confirm_progress, proposal_id=proposal.key.id()) }}',"Waiting for progress...");
+    {% endif %}
+  {% endif %}
+
+  {% if proposal.decider == user.key %}
+    {% if proposal.progress <= proposal.times %}
+    progress("/proposal/{{ proposal.key.id()}}/progress", "Make progress");
+    $("input[name='progress']").val("{{ proposal.progress }} / {{ proposal.times }}");
+    {% else %}return;
+    {% endif %}
+  {% endif %}
+});
+
+
 $('.accept-btn').click(function(evt){
   evt.preventDefault();
 
@@ -254,36 +216,19 @@ $('.decline-btn').click(function(evt){
   }); 
 
 });
-$('.progress-btn').click(function(evt){
-  evt.preventDefault();
-
-  {% if proposal.requestor == user.key %}
-  {% if proposal.progress == proposal.confirmed_progress %}return;
-    {% else %}progress('{{ uri_for("confirm_progress", proposal_id=proposal.key.id()) }}',"Waiting for progress...");
-    {% endif %}
-  {% endif %}
-
-  {% if proposal.decider == user.key %}
-    {% if proposal.progress <= proposal.times %}
-    progress("/proposal/{{ proposal.key.id()}}/progress", "Make progress");
-    $("input[name='progress']").val("{{ proposal.progress }} / {{ proposal.times }}");
-    {% else %}return;
-    {% endif %}
-  {% endif %}
-});
 
 function progress(url, msg){
   $.ajax({
-          type: 'POST',
-          data: null,
-          url: url,
-          success: function(res) {
-              if (res.error) {
-                  console.log(res.message);
-              } else {
-                  $(".progress-btn").text(msg);
-              }
-          }
+            type: 'POST',
+            data: null,
+            url: url,
+            success: function(res) {
+                if (res.error) {
+                    console.log(res.message);
+                } else {
+                    $(".progress-btn").text(msg);
+                }
+            }
   }); 
 }
 

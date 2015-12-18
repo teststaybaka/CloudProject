@@ -96,7 +96,7 @@ $(document).ready(function(){
 			<b>{% if message.receiver == user.key %} You {% else %} {{ opposite.firstname }} {% endif %}</b>
 			</td>
 
-			<td class="message-text" id="message-content">-${{ message.text }}</td>
+			<td class="message-text" id="message-content">{{ message.text }}</td>
 
 		</tr>
 	{% endfor %}

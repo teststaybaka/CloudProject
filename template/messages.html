@@ -94,7 +94,12 @@ h4.proposal{
             Make Progress
         {% endif %}
       </a></td></tr>
-      <tr><td><b>Status:</b></td><td>{{ proposal.status }}</td></tr>
+            <tr><td><b>Status:</b></td><td>Currently {{ proposal.status }},
+          {% if proposal.decider == user.key %}
+            {% if proposal.status == "pending" %}<a href="" class="accept-btn">Accept</a> or <a href="" class="decline-btn">Decline</a>
+            {% endif %}
+          {% endif %}
+      </td></tr>
     </table>
 
     <input class="btn btn-primary" type="submit" value="Save">
@@ -157,13 +162,46 @@ $('.modify-proposal-form').submit(function(evt) {
             }
         });
     });
+$('.accept-btn').click(function(evt){
+  evt.preventDefault();
 
+   $.ajax({
+            type: 'POST',
+            data: null,
+            url: '/proposal/{{ proposal.key.id() }}/accept',
+            success: function(res) {
+                if (res.error) {
+                    console.log(res.message);
+                } else {
+                    window.location.replace('/proposal/{{ proposal.key.id() }}');
+                }
+            }
+  });
+
+});
+$('.decline-btn').click(function(evt){
+   evt.preventDefault();
+
+   $.ajax({
+            type: 'POST',
+            data: null,
+            url: '/proposal/{{ proposal.key.id() }}/decline',
+            success: function(res) {
+                if (res.error) {
+                    console.log(res.message);
+                } else {
+                    window.location.replace('/proposal/{{ proposal.key.id() }}');
+                }
+            }
+  }); 
+
+});
 $('.progress-btn').click(function(evt){
   evt.preventDefault();
 
   {% if proposal.requestor == user.key %}
   {% if proposal.progress == proposal.confirmed_progress %}return;
-    {% else %}progress('{{ uri_for(confirm_progress, proposal_id=proposal.key.id()) }}',"Waiting for progress...");
+    {% else %}progress('{{ uri_for("confirm_progress", proposal_id=proposal.key.id()) }}',"Waiting for progress...");
     {% endif %}
   {% endif %}
 
@@ -178,16 +216,16 @@ $('.progress-btn').click(function(evt){
 
 function progress(url, msg){
   $.ajax({
-            type: 'POST',
-            data: null,
-            url: url,
-            success: function(res) {
-                if (res.error) {
-                    console.log(res.message);
-                } else {
-                    $(".progress-btn").text(msg);
-                }
-            }
+          type: 'POST',
+          data: null,
+          url: url,
+          success: function(res) {
+              if (res.error) {
+                  console.log(res.message);
+              } else {
+                  $(".progress-btn").text(msg);
+              }
+          }
   }); 
 }
 

@@ -4,7 +4,7 @@ var wss = new WebSocketServer({ port: 80 });
 var channels = {};
 var url_req = /^\/(\d+)$/;
 wss.on('connection', function(ws) {
-    var matched = client.upgradeReq.url.match(url_req);
+    var matched = ws.upgradeReq.url.match(url_req);
     if (!matched) {
         ws.close();
         return;
@@ -16,7 +16,7 @@ wss.on('connection', function(ws) {
     }
     channels[proposal_id].push(ws);
 
-    ws.on('message', function(message)) {
+    ws.on('message', function(message) {
         spreadMessage(proposal_id, ws, message);
     });
     ws.on('close', function() {

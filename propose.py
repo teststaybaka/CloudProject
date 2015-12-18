@@ -141,7 +141,7 @@ class DeclineProposal(BaseHandler):
             return
 
         proposal.status = 'declined'
-        text = 'The proposal has been declined. Don\' get frustrated!'
+        text = 'The proposal was declined. Don\' get frustrated!'
         message = Message(parent=proposal.key, sender=self.user_key, receiver=proposal.requestor, text=text)
         proposal.last_message = text;
         ndb.put_multi((message, proposal))
@@ -180,7 +180,7 @@ class Progress(BaseHandler):
         proposal.updated = datetime.now()
         if proposal.progress == proposal.times:
             proposal.status = 'finished'
-            text = 'Yeah! Your request is finished!'
+            text = 'Yeah! The work is finished!'
             message = Message(parent=proposal.key, sender=self.user_key, receiver=proposal.requestor, text=text)
             proposal.last_message = text
             ndb.put_multi((proposal, message))

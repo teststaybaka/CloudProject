@@ -96,13 +96,12 @@ class Home(BaseHandler):
             user = self.user_key.get()
             logging.info(user.tags)
             if user.tags:
-                all_service_with_those_tags = Service.query(Service.creator!=self.user_key,Service.status == "available",Service.service_tags.IN (list(user.tags))).fetch()
+                all_service_with_those_tags = Service.query(Service.creator!=self.user_key, Service.status == "available", Service.service_tags.IN(user.tags)).order(Service.creator, -Service.created).fetch()
             else:
-                all_service_with_those_tags = Service.query(Service.status == "available").fetch()
+                all_service_with_those_tags = Service.query(Service.creator!=self.user_key, Service.status == "available").order(Service.creator, -Service.created).fetch()
         else:
-            all_service_with_those_tags = Service.query(Service.status == "available").fetch()
+            all_service_with_those_tags = Service.query(Service.status == "available").order(-Service.created).fetch()
         
-        all_service_with_those_tags.sort(key=lambda x: x.created, reverse=True)
         non_rep=[]
         for i in range(0,len(all_service_with_those_tags)):
             curr=all_service_with_those_tags[i]
@@ -114,9 +113,6 @@ class Home(BaseHandler):
                 non_rep+=[curr]
 
         self.render('index2',{'services':non_rep})
-
-
-
 
 class Signup(BaseHandler):
     def post(self):

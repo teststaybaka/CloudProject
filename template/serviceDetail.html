@@ -14,9 +14,6 @@
         height: 400px;
         margin-top: 50px;
     }
-    .description {
-        white-space: pre-wrap;
-    }
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -58,7 +55,7 @@ $(document).ready(function() {
 <h4>Tags: {% for service_tag in service.service_tags %} {{ service_tag }} {% endfor %}</h4>
 <h4>Status: {{ service.status }}</h4>
 <h4>Description: </h4>
-<p class="description">{{ service.description }}</p>
+<p>{{ service.description }}</p>
 
 
 {% if user %}

@@ -63,6 +63,64 @@ h4.proposal{
 	width: inherit;
 }
 </style>
+<<<<<<< HEAD
+
+<script type="text/javascript">
+$(function(){
+	// var messageList = $("#message-list");
+	
+	var address = 'ws://104.196.35.247/' + {{ proposal.key.id() }};
+	var ws = new WebSocket(address);
+	var clicked = false;
+	ws.onopen = function() {
+        console.log('Connected');
+        $("#send-message-button").click(function(){
+        	var message = $("#message-body").val();
+		    ws.send(message);
+		  	clicked = true;
+		  	$("#message-body").val('');
+			appendMessage(message);
+		});
+    };
+	ws.onclose = function() { 
+      // websocket is closed.
+      console.log("Connection is closed..."); 
+    };
+	
+	
+	function appendMessage(msg) {
+		var cell1 = "<tr><td class='from'>from<b>";
+		if (clicked) 
+			cell1 += "You"
+		else 
+			cell1 += $("#opposite-firstname").val();
+		cell1 += "</b> to <b>"
+		if (!clicked) 
+			cell1 += "You"
+		else 
+			cell1 += $("#opposite-firstname").val();
+		cell1 += "</b></td>";
+
+		var cell2 = "<td class='message-text' id='message-content'>-$" + msg + "</td></tr>";
+		var cell = cell1 + cell2
+		console.log(cell);
+		$('#message-list tbody').append(cell);
+	}
+
+})	
+</script>
+
+||||||| merged common ancestors
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+
+}	
+</script>
+
+=======
+>>>>>>> 7afdd8a3b88428d4c42005ddab0db12a9c23d472
 {% endblock %}
 
 {% block body %}
@@ -115,8 +173,41 @@ h4.proposal{
   <div class="panel-body">
     You have <span>{{ messages|count }}</span> message{% if messages|count > 1 %}s{% endif %}.
   </div>
+<<<<<<< HEAD
+  <table class="table messages" id="message-list">
+  	<tbody>
+||||||| merged common ancestors
+  <table class="table messages">
+=======
   <div class="messages">
+>>>>>>> 7afdd8a3b88428d4c42005ddab0db12a9c23d472
     {% for message in messages %}
+<<<<<<< HEAD
+		<tr>
+			<td class="from">from 
+			<b>{% if message.sender == user.key %} You {% else %} {{ opposite.firstname }} {% endif %}</b> to
+			<b>{% if message.receiver == user.key %} You {% else %} {{ opposite.firstname }} {% endif %}</b>
+			</td>
+
+			<td class="message-text" id="message-content">-${{ message.text }}</td>
+
+		</tr>
+	{% endfor %}
+	</tbody>
+	</table>
+||||||| merged common ancestors
+		<tr>
+			<td class="from">from 
+			<b>{% if message.sender == user.key %} You {% else %} {{ opposite.firstname }} {% endif %}</b> to
+			<b>{% if message.receiver == user.key %} You {% else %} {{ opposite.firstname }} {% endif %}</b>
+			</td>
+
+			<td class="message-text" id="message-content">-${{ message.text }}</td>
+
+		</tr>
+	{% endfor %}
+	</table>
+=======
         <div>
             <div class="from">from 
             <b>{% if message.sender == user.key %} You {% else %} {{ opposite.firstname }} {% endif %}</b> to
@@ -127,12 +218,38 @@ h4.proposal{
         </div>
 	  {% endfor %}
 	</div>
+>>>>>>> 7afdd8a3b88428d4c42005ddab0db12a9c23d472
 
 </div>
 
 <div class="panel panel-default">
     <div class="panel-heading" id="message-title">
     <h1 class="panel-title">Send Messages</h1>
+<<<<<<< HEAD
+  	</div>
+	<table class="table messages">
+		<tr>
+			<td class="center-tags"><textarea id="message-body" rows="5" cols="100"></textarea></td>
+		</tr>
+		<tr>
+			<td class="center-tags"><input id="send-message-button" class="btn btn-success" type="submit" value="Send"/></td>
+			<!-- <td class="center-tags"><input class="form-control" type="text" id="newMessage" autocomplete="off" placeholder="Type in your message and press enter !"><td> -->
+		</tr>	
+	</table>
+
+||||||| merged common ancestors
+  	</div>
+	<table class="table messages">
+		<tr>
+			<td class="center-tags" id="message-body"><textarea rows="5" cols="100"></textarea></td>
+		</tr>
+		<tr>
+			<td class="center-tags"><a class="btn btn-info" type="submit" method="POST">Send</a></td>
+			
+		</tr>	
+	</table>
+
+=======
     </div>
     <table class="table messages">
         <tr>
@@ -143,6 +260,7 @@ h4.proposal{
             
         </tr>   
     </table>
+>>>>>>> 7afdd8a3b88428d4c42005ddab0db12a9c23d472
 </div>
 
 <script>

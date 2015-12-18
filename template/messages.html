@@ -50,10 +50,48 @@ h4.proposal{
 </style>
 
 <script type="text/javascript">
-$(document).ready(function(){
+$(function(){
+	// var messageList = $("#message-list");
+	
+	var address = 'ws://104.196.35.247/' + {{ proposal.key.id() }};
+	var ws = new WebSocket(address);
+	var clicked = false;
+	ws.onopen = function() {
+        console.log('Connected');
+        $("#send-message-button").click(function(){
+        	var message = $("#message-body").val();
+		    ws.send(message);
+		  	clicked = true;
+		  	$("#message-body").val('');
+			appendMessage(message);
+		});
+    };
+	ws.onclose = function() { 
+      // websocket is closed.
+      console.log("Connection is closed..."); 
+    };
+	
+	
+	function appendMessage(msg) {
+		var cell1 = "<tr><td class='from'>from<b>";
+		if (clicked) 
+			cell1 += "You"
+		else 
+			cell1 += $("#opposite-firstname").val();
+		cell1 += "</b> to <b>"
+		if (!clicked) 
+			cell1 += "You"
+		else 
+			cell1 += $("#opposite-firstname").val();
+		cell1 += "</b></td>";
 
+		var cell2 = "<td class='message-text' id='message-content'>-$" + msg + "</td></tr>";
+		var cell = cell1 + cell2
+		console.log(cell);
+		$('#message-list tbody').append(cell);
+	}
 
-}	
+})	
 </script>
 
 {% endblock %}
@@ -88,7 +126,8 @@ $(document).ready(function(){
   <div class="panel-body">
     You have <span>{{ messages|count }}</span> message{% if messages|count > 1 %}s{% endif %}.
   </div>
-  <table class="table messages">
+  <table class="table messages" id="message-list">
+  	<tbody>
     {% for message in messages %}
 		<tr>
 			<td class="from">from 
@@ -100,6 +139,7 @@ $(document).ready(function(){
 
 		</tr>
 	{% endfor %}
+	</tbody>
 	</table>
 
 </div>
@@ -110,11 +150,11 @@ $(document).ready(function(){
   	</div>
 	<table class="table messages">
 		<tr>
-			<td class="center-tags" id="message-body"><textarea rows="5" cols="100"></textarea></td>
+			<td class="center-tags"><textarea id="message-body" rows="5" cols="100"></textarea></td>
 		</tr>
 		<tr>
-			<td class="center-tags"><a class="btn btn-info" type="submit" method="POST">Send</a></td>
-			
+			<td class="center-tags"><input id="send-message-button" class="btn btn-success" type="submit" value="Send"/></td>
+			<!-- <td class="center-tags"><input class="form-control" type="text" id="newMessage" autocomplete="off" placeholder="Type in your message and press enter !"><td> -->
 		</tr>	
 	</table>
 

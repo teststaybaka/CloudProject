@@ -94,12 +94,7 @@ h4.proposal{
             Make Progress
         {% endif %}
       </a></td></tr>
-      <tr><td><b>Status:</b></td><td>Currently {{ proposal.status }},
-          {% if proposal.decider == user.key %}
-            {% if proposal.status == "pending" %}<a href="" class="accept-btn">Accept</a> or <a href="" class="decline-btn">Decline</a>
-            {% endif %}
-          {% endif %}
-      </td></tr>
+      <tr><td><b>Status:</b></td><td>{{ proposal.status }}</td></tr>
     </table>
 
     <input class="btn btn-primary" type="submit" value="Save">
@@ -179,42 +174,6 @@ $('.progress-btn').click(function(evt){
     {% else %}return;
     {% endif %}
   {% endif %}
-});
-
-
-$('.accept-btn').click(function(evt){
-  evt.preventDefault();
-
-   $.ajax({
-            type: 'POST',
-            data: null,
-            url: '/proposal/{{ proposal.key.id() }}/accept',
-            success: function(res) {
-                if (res.error) {
-                    console.log(res.message);
-                } else {
-                    window.location.replace('/proposal/{{ proposal.key.id() }}');
-                }
-            }
-  });
-
-});
-$('.decline-btn').click(function(evt){
-   evt.preventDefault();
-
-   $.ajax({
-            type: 'POST',
-            data: null,
-            url: '/proposal/{{ proposal.key.id() }}/decline',
-            success: function(res) {
-                if (res.error) {
-                    console.log(res.message);
-                } else {
-                    window.location.replace('/proposal/{{ proposal.key.id() }}');
-                }
-            }
-  }); 
-
 });
 
 function progress(url, msg){

@@ -75,7 +75,13 @@ class Conversation(BaseHandler):
             return
 
         messages = Message.query(ancestor=proposal.key).order(-Message.created).fetch()
-        self.render('messages', {'messages': messages, 'proposal': proposal, 'service': proposal.service.get()})
+        opposite_key = None
+        if self.user_key == proposal.decider:
+            opposite_key = proposal.requestor
+        else:
+            opposite_key = proposal.decider
+        service, opposite = ndb.get_multi([proposal.service, opposite_key])
+        self.render('messages', {'messages': messages, 'proposal': proposal, 'service': service, 'opposite': opposite})
 
     @login_required_json
     def send(self, proposal_id):

@@ -41,6 +41,7 @@ h1 i{
 }
 .message-text{
 	font-style: italic;
+    white-space: pre-wrap;
 }
 h4.proposal{
 	margin-left: 8px;
@@ -57,6 +58,7 @@ $(document).ready(function(){
 
 {% endblock %}
 {% block body %}
+<input type="hidden" id="opposite-firstname" value="{{ opposite.firstname }}">
 <div class="panel panel-default">
   <!-- Default panel contents -->
   <div class="panel-heading">
@@ -84,16 +86,22 @@ $(document).ready(function(){
     <h1 class="panel-title">Messages</h1>
   </div>
   <div class="panel-body">
-    You have <span>{{ messages|count }}</span> message(s).
+    You have <span>{{ messages|count }}</span> message{% if messages|count > 1 %}s{% endif %}.
   </div>
   <table class="table messages">
     {% for message in messages %}
 		<tr>
 			<td class="from">from 
-			<b>{% if message.sender == proposal.requestor %} You {% else %} {{ message.sender.get().firstname }} {% endif %}</b> to
-			<b>{% if message.receiver == proposal.requestor %} You {% else %} {{ message.receiver.get().firstname }} {% endif %}</b>	
+			<b>{% if message.sender == user.key %} You {% else %} {{ opposite.firstname }} {% endif %}</b> to
+			<b>{% if message.receiver == user.key %} You {% else %} {{ opposite.firstname }} {% endif %}</b>
 			</td>
+<<<<<<< HEAD
 			<td class="message-text" id="message-content">-${{ message.text }}</td>
+||||||| merged common ancestors
+			<td class="message-text">-${{ message.text }}</td>
+=======
+			<td class="message-text">{{ message.text }}</td>
+>>>>>>> 36dcace5375988615103eb07c108dd836e43ed32
 		</tr>
 	{% endfor %}
 	</table>

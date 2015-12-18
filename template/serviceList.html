@@ -39,24 +39,6 @@ h1 i{
 }
 </style>
 
-<script>
-$(document).ready(function(){
-	$(".cancel").click(function(evt){
-		var service_id = $(this).attr("num")
-		evt.preventDefault();
-		var r = confirm("Are you sure you would like to cancel this service?");
-		if (r == true){
-			$.post("/service/" + service_id+ "/cancel", function(resp){
-				if(resp.error)
-					console.log(resp.message);
-				else
-					window.location.href="/my/services";
-			});
-		}
-	});
-});				
-</script>
-
 {% endblock %}
 {% block body %}
 <div class="panel panel-default">
@@ -99,13 +81,8 @@ $(document).ready(function(){
        	<td><!-- <a href="{{ uri_for('service_detail', service_id=service.key.id()) }}" class="service">More</a> -->
        		<a class="btn btn-success detail " href="{{ uri_for('service_detail', service_id = service.key.id()) }}">View Details</a>
        		{% if service.status == "available" %}
-
        		<a class="btn btn-primary" href="{{ uri_for('modify_service', service_id=service.key.id()) }}" class="service">Modify</a>
-       		
-       		<a num="{{ service.key.id() }}" class="btn btn-danger cancel" type="submit" style="margin-right: 5px;" method="POST">Cancel Service</a>
-
        		{% endif %}
-
        	</td>
 </tr>
 {% endfor %}

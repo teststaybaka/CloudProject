@@ -15,7 +15,7 @@ routes = [
     webapp2.Route(r'/service/<service_id:\d+>/modify', service.ServiceHandle, name="modify_service", handler_method='modify'),
     webapp2.Route(r'/service/<service_id:\d+>/modify/post', service.ServiceHandle, name="modify_service_post", handler_method='modify_post'),
     webapp2.Route(r'/service/<service_id:\d+>', service.ServiceDetail, name="service_detail"),
-    webapp2.Route(r'/service/<service_id:\d+>/cancel', service.CancelService, name="cancel_service"),
+    webapp2.Route(r'/service/<service_id:\d+>/status', service.ServiceStatus, name="change_service_status"),
 
     webapp2.Route(r'/my/proposal', propose.MyProposals, name="my_proposal"),
     webapp2.Route(r'/my/receives', propose.ReceivedProposals, name="my_receives"),

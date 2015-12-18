@@ -173,17 +173,24 @@ class ServiceDetail(BaseHandler):
             self.render('notify', {'message': 'Not existed.'})
             return
 
-        logging.info(service.address)
         self.render('serviceDetail', {'service': service, 'creator': service.creator.get()})
 
-class CancelService(BaseHandler):
+class ServiceStatus(BaseHandler):
     @login_required_json
     def post(self, service_id):
         service = ndb.Key('Service', int(service_id)).get()
-        if not service or service.status != 'available' or service.creator != self.user_key:
-            self.json_response(True, {'message': 'Invalid cancellation.'})
+        if not service or service.creator != self.user_key:
+            self.json_response(True, {'message': 'Service invalid.'})
             return
 
-        service.status = 'cancelled'
+        status = self.request.get('status')
+        if (service.status == 'available' and status not in ['in progress', 'cancelled'])\
+            or (service.status == 'in progress' and status not in ['available', 'completed'])\
+            or (service.status == 'cancelled')\
+            or (service.status == 'completed'):
+            self.json_response(True, {'message': 'Invalid service status '+service.status+' for change '+status})
+            return
+
+        service.status = status
         service.put()
         self.json_response(False)

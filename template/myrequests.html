@@ -64,7 +64,7 @@ h1 i{
 <tr>
 	<td><b>#</b></td>
 	<td><b>Title</b></td>
-	<td><b>Service Creator</b></td>
+	<td><b>Creator</b></td>
 	<td><b>Price ($USD)</b></td>
 	<td><b>Status</b></td>
 	<td><b>Options</b></td>
@@ -72,8 +72,8 @@ h1 i{
 {% for proposal in proposals %}
 <tr>
 		<td> <b>{{ loop.index }} </b></td>
-        <td>{{ proposal.service.get().title }}</td>
-        <td> {{proposal.decider.get().firstname}} {{proposal.decider.get().lastname}} </td>
+        <td>{{ services[loop.index0].title }}</td>
+        <td> {{ deciders[loop.index0].firstname}} {{ deciders[loop.index0].lastname }} </td>
        	<td>{{ proposal.price }} </td>	
        	<td class="{{proposal.status}}">{{ proposal.status }} </td>	
        	<td><a href="{{ uri_for('proposal', proposal_id=proposal.key.id()) }}">Full Conversation</a>

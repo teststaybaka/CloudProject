@@ -46,3 +46,9 @@ indexes:
   - name: creator
   - name: created
     direction: desc
+
+- kind: Service
+  properties:
+  - name: service_tags
+  - name: status
+  - name: creator

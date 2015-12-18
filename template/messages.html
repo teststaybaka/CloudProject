@@ -2,9 +2,6 @@
 {% block head %}
 {{ super() }}
 <style>
-.center-tags{
-	text-align:center;
-}
 .background-color{
 	padding: 50px;
 }
@@ -41,24 +38,20 @@ h1 i{
 }
 .message-text{
 	font-style: italic;
-    white-space: pre-wrap;
 }
 h4.proposal{
-	margin-left: 8px;
+	margin-left: 10px;
 	text-decoration: underline;
+}
+.form-control{
+	display: inline-block;
+	width: inherit;
 }
 </style>
 
-<script type="text/javascript">
-$(document).ready(function(){
-
-
-}	
-</script>
 
 {% endblock %}
 {% block body %}
-<input type="hidden" id="opposite-firstname" value="{{ opposite.firstname }}">
 <div class="panel panel-default">
   <!-- Default panel contents -->
   <div class="panel-heading">
@@ -71,13 +64,17 @@ $(document).ready(function(){
   <h4 class="proposal"> Proposal Details </h4>
 
   <!-- Table -->
-	<table class="table">
-	<tr><td><b>Price:</b></td><td>${{ proposal.price }}</td></tr>
-	<tr><td><b>Quantity:</b></td><td>{{ proposal.times }}</td></tr>
-	<tr><td><b>Type:</b></td><td>{{ proposal.kind }}</td></tr>
-	<tr><td><b>Progress:</b></td><td>{{ proposal.progress }}/{{ proposal.times }}</td></tr>
-	<tr><td><b>Status:</b></td><td>{{ proposal.status }}</td></tr>
-	</table>
+  <form class="modify-proposal-form"  method="POST" action="" style="padding: 10px;">
+		<table class="table">
+			<tr><td><b>Price:</b></td><td>$ <input class="form-control" type="text" name="price" value="{{ proposal.price }}"></td></tr>
+			<tr><td><b>Quantity:</b></td><td><input class="form-control" type="text" name="times" value="{{ proposal.times }}"></td></tr>
+			<tr><td><b>Type:</b></td><td><input class="form-control" type="text" name="kind" value="{{ proposal.kind }}" readonly></td></tr>
+			<tr><td><b>Progress:</b></td><td><input class="form-control" style="margin-right: 5px;" type="number" name="progress" min="0" max="{{proposal.times}}" value="{{proposal.progress}}">/ {{ proposal.times }}</td></tr>
+			<tr><td><b>Status:</b></td><td>{{ proposal.status }}</td></tr>
+		</table>
+
+		<input class="btn btn-primary" type="submit" value="Save">
+	</form>
 </div>
 
 <div class="panel panel-default">
@@ -86,37 +83,41 @@ $(document).ready(function(){
     <h1 class="panel-title">Messages</h1>
   </div>
   <div class="panel-body">
-    You have <span>{{ messages|count }}</span> message{% if messages|count > 1 %}s{% endif %}.
+    You have {{ messages|count }} message(s).
   </div>
   <table class="table messages">
     {% for message in messages %}
 		<tr>
 			<td class="from">from 
-			<b>{% if message.sender == user.key %} You {% else %} {{ opposite.firstname }} {% endif %}</b> to
-			<b>{% if message.receiver == user.key %} You {% else %} {{ opposite.firstname }} {% endif %}</b>
+			<b>{% if message.sender == proposal.requestor %} You {% else %} {{ message.sender.get().firstname }} {% endif %}</b> to
+			<b>{% if message.receiver == proposal.requestor %} You {% else %} {{ message.receiver.get().firstname }} {% endif %}</b>	
 			</td>
-
-			<td class="message-text" id="message-content">-${{ message.text }}</td>
-
+			<td class="message-text">-${{ message.text }}</td>
 		</tr>
 	{% endfor %}
 	</table>
 
 </div>
 
-<div class="panel panel-default messages">
-	<div class="panel-heading" id="message-title">
-    <h1 class="panel-title">Send Messages</h1>
-  	</div>
-	<table class="table messages">
-		<tr>
-			<td class="center-tags" id="message-body"><textarea rows="5" cols="100"></textarea></td>
-		</tr>
-		<tr>
-			<td class="center-tags"><a class="btn btn-info" type="submit" method="POST">Send</a></td>
-			
-		</tr>	
-	</table>
+<script>
 
-</div>
+$('.modify-proposal-form').submit(function(evt) {
+        evt.preventDefault();
+        $.ajax({
+            type: 'POST',
+            data: $(this).serialize(),
+            dataType: 'JSON',
+            url: '{{ uri_for("modify_proposal", proposal_id=proposal.key.id()) }}',
+            success: function(res) {
+                if (res.error) {
+                    console.log(res.message);
+                } else {
+                    window.location.replace('/my/proposal');
+                }
+            }
+        });
+    });
+
+
+</script>
 {% endblock %}

@@ -23,14 +23,17 @@
 <div class="container">
 
 <h2 style="margin-top: 100px">{{ service.title }}</h2>
-<h4>price: {{ service.price }}</h4>
-<h4>available time: {{ service.available_time }}</h4>
-<h4>times: {{ service.times }}</h4>
-<h4>location: {{ service.location }}</h4>
-<h4>type: {{ service.kind }}</h4>
-<h4>service_tags: {% for service_tag in service.service_tags %} {{ service_tag }} {% endfor %}</h4>
-<h4>status: {{ service.status }}</h4>
-<p>description: {{ service.description }}</p>
+<h4>Price: {{ service.price }}</h4>
+<h4>Available time: {{ service.available_time }}</h4>
+<h4>Quantity: {% if service.times != 0%}{{ service.times }}{% else %}Unlimited{% endif %}</h4>
+{% if service.address %}
+<h4>Address: {{ service.address }}</h4>
+{% endif %}
+<h4>Type: {% if service.kind == 'offer' %}Service{% else %}Request{% endif %}</h4>
+<h4>Tags: {% for service_tag in service.service_tags %} {{ service_tag }} {% endfor %}</h4>
+<h4>Status: {{ service.status }}</h4>
+<h4>Description: </h4>
+<p>{{ service.description }}</p>
 
 
 {% if service.status == "available" %}

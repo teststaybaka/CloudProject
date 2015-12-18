@@ -130,14 +130,12 @@ class ServiceHandle(BaseHandler):
             self.json_response(True, {'message': str(e)})
             return
         user = self.user_key.get()
-        print user.tags
-        user.tags = user.tags + self.service_tags
+        user.tags = list(set(user.tags + self.service_tags))
         user.put()
-        print user.tags
 
         service = Service(creator=self.user_key, address=self.address, location=self.location, 
-            title=self.title, description=self.description, price=self.price, times=self.times, available_time=self.available_time, 
-            service_tags=self.service_tags, kind=self.kind)
+            title=self.title, description=self.description, price=self.price, available_time=self.available_time, 
+            times=self.times, service_tags=self.service_tags, kind=self.kind)
         service.put()
         service.createIndex()
         self.json_response(False)
@@ -154,6 +152,10 @@ class ServiceHandle(BaseHandler):
         if not service or service.status != 'available' or service.creator != self.user_key:
             self.json_response(True, {'message': 'Invalid modification.'})
             return
+
+        user = self.user_key.get()
+        user.tags = list(set(user.tags + self.service_tags))
+        user.put()
 
         service.address = self.address
         service.location = self.location

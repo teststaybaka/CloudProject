@@ -64,10 +64,7 @@
         <label class="control-label col-md-2">Service type: </label>
         <div class="col-md-10">
                 <input id="service_tags" class="form-control ui-autocomplete-input" type="text" name="service_tags" 
-                value="
-                {%- for tag in service.service_tags -%} 
-                {{ tag }}, 
-                {%- endfor -%}" autocomplete="off">
+                value="{{ ','.join(service.service_tags) }}" autocomplete="off">
         </div>
     </div>
     <div class="form-group">

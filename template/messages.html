@@ -3,51 +3,67 @@
 {{ super() }}
 <style>
 .center-tags{
-	text-align:center;
+    text-align:center;
 }
 .background-color{
-	padding: 50px;
+    padding: 50px;
 }
 .panel{
-	margin-top: 50px;
+    margin-top: 50px;
 }
 .modify:before{
-	content: "|";
-	margin-right: 2px;
-	color: #337ab7;
+    content: "|";
+    margin-right: 2px;
+    color: #337ab7;
 }
 td{
- 	max-width:200px; 
- 	overflow-wrap: break-word;
+    max-width:200px; 
+    overflow-wrap: break-word;
 }
 .panel-title{
-	font-size: 22px;
+    font-size: 22px;
 }
 h1 i{
-	margin-right: 5px;
-	font-size: 19px;
+    margin-right: 5px;
+    font-size: 19px;
+}
+#message-body textarea{
+  width: 100%;
+  border: none;
+}
+.messages{
+  padding: 15px;
+  border-top: 1px solid #ccc;
+}
+.messages > div{
+  margin-bottom: 10px;
 }
 .accepted, .finished{
-	 color: green;
+     color: green;
 }
 .declined{
-	color: red;
+    color: red;
 }
 .confirmed{
-	color: black;
+    color: black;
 }
 .pending{
-	color: blue;
+    color: blue;
 }
 .message-text{
-	font-style: italic;
+    font-style: italic;
     white-space: pre-wrap;
 }
 h4.proposal{
-	margin-left: 8px;
-	text-decoration: underline;
+    margin-left: 8px;
+    text-decoration: underline;
+}
+.form-control{
+	display: inline-block;
+	width: inherit;
 }
 </style>
+<<<<<<< HEAD
 
 <script type="text/javascript">
 $(function(){
@@ -94,7 +110,19 @@ $(function(){
 })	
 </script>
 
+||||||| merged common ancestors
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+
+}	
+</script>
+
+=======
+>>>>>>> 7afdd8a3b88428d4c42005ddab0db12a9c23d472
 {% endblock %}
+
 {% block body %}
 <input type="hidden" id="opposite-firstname" value="{{ opposite.firstname }}">
 <div class="panel panel-default">
@@ -109,13 +137,27 @@ $(function(){
   <h4 class="proposal"> Proposal Details </h4>
 
   <!-- Table -->
-	<table class="table">
-	<tr><td><b>Price:</b></td><td>${{ proposal.price }}</td></tr>
-	<tr><td><b>Quantity:</b></td><td>{{ proposal.times }}</td></tr>
-	<tr><td><b>Type:</b></td><td>{{ proposal.kind }}</td></tr>
-	<tr><td><b>Progress:</b></td><td>{{ proposal.progress }}/{{ proposal.times }}</td></tr>
-	<tr><td><b>Status:</b></td><td>{{ proposal.status }}</td></tr>
-	</table>
+ <form class="modify-proposal-form"  method="POST" action="" style="padding: 10px;">
+    <table class="table">
+      <tr><td><b>Price:</b></td><td>$ <input class="form-control" type="text" name="price" value="{{ proposal.price }}"></td></tr>
+      <tr><td><b>Quantity:</b></td><td><input class="form-control" type="text" name="times" value="{{ proposal.times }}"></td></tr>
+      <tr><td><b>Type:</b></td><td><input class="form-control" type="text" name="kind" value="{{ proposal.kind }}" readonly></td></tr>
+      <tr><td><b>Progress:</b></td><td><input class="form-control" style="margin-right: 5px;" type="text" name="progress" value="{{proposal.progress}} / {{ proposal.times }}" readonly> <a class="progress-btn" href="">
+
+        {% if proposal.requestor == user.key %}
+          {% if proposal.progress == proposal.confirmed_progress %}Waiting for Progress...
+          {% else %}Confirm Progress
+          {% endif %}
+        {% else %}
+            Make Progress
+        {% endif %}
+      </a></td></tr>
+      <tr><td><b>Status:</b></td><td>{{ proposal.status }}</td></tr>
+    </table>
+
+    <input class="btn btn-primary" type="submit" value="Save">
+  </form>
+
 </div>
 
 <div class="panel panel-default">
@@ -126,9 +168,16 @@ $(function(){
   <div class="panel-body">
     You have <span>{{ messages|count }}</span> message{% if messages|count > 1 %}s{% endif %}.
   </div>
+<<<<<<< HEAD
   <table class="table messages" id="message-list">
   	<tbody>
+||||||| merged common ancestors
+  <table class="table messages">
+=======
+  <div class="messages">
+>>>>>>> 7afdd8a3b88428d4c42005ddab0db12a9c23d472
     {% for message in messages %}
+<<<<<<< HEAD
 		<tr>
 			<td class="from">from 
 			<b>{% if message.sender == user.key %} You {% else %} {{ opposite.firstname }} {% endif %}</b> to
@@ -141,12 +190,37 @@ $(function(){
 	{% endfor %}
 	</tbody>
 	</table>
+||||||| merged common ancestors
+		<tr>
+			<td class="from">from 
+			<b>{% if message.sender == user.key %} You {% else %} {{ opposite.firstname }} {% endif %}</b> to
+			<b>{% if message.receiver == user.key %} You {% else %} {{ opposite.firstname }} {% endif %}</b>
+			</td>
+
+			<td class="message-text" id="message-content">-${{ message.text }}</td>
+
+		</tr>
+	{% endfor %}
+	</table>
+=======
+        <div>
+            <div class="from">from 
+            <b>{% if message.sender == user.key %} You {% else %} {{ opposite.firstname }} {% endif %}</b> to
+            <b>{% if message.receiver == user.key %} You {% else %} {{ opposite.firstname }} {% endif %}</b>
+            </div>
+            <div class="message-text" id="message-content">{{ message.text }}</div>
+            <i>@{{ message.created }}</i>
+        </div>
+	  {% endfor %}
+	</div>
+>>>>>>> 7afdd8a3b88428d4c42005ddab0db12a9c23d472
 
 </div>
 
-<div class="panel panel-default messages">
-	<div class="panel-heading" id="message-title">
+<div class="panel panel-default">
+    <div class="panel-heading" id="message-title">
     <h1 class="panel-title">Send Messages</h1>
+<<<<<<< HEAD
   	</div>
 	<table class="table messages">
 		<tr>
@@ -158,5 +232,82 @@ $(function(){
 		</tr>	
 	</table>
 
+||||||| merged common ancestors
+  	</div>
+	<table class="table messages">
+		<tr>
+			<td class="center-tags" id="message-body"><textarea rows="5" cols="100"></textarea></td>
+		</tr>
+		<tr>
+			<td class="center-tags"><a class="btn btn-info" type="submit" method="POST">Send</a></td>
+			
+		</tr>	
+	</table>
+
+=======
+    </div>
+    <table class="table messages">
+        <tr>
+            <td class="center-tags" id="message-body"><textarea rows="5" cols="100" placeholder="Message here"></textarea></td>
+        </tr>
+        <tr>
+            <td class="center-tags"><a class="btn btn-info" type="submit" method="POST">Send</a></td>
+            
+        </tr>   
+    </table>
+>>>>>>> 7afdd8a3b88428d4c42005ddab0db12a9c23d472
 </div>
+
+<script>
+$('.modify-proposal-form').submit(function(evt) {
+        evt.preventDefault();
+        $.ajax({
+            type: 'POST',
+            data: $(this).serialize(),
+            dataType: 'JSON',
+            url: '{{ uri_for("modify_proposal", proposal_id=proposal.key.id()) }}',
+            success: function(res) {
+                if (res.error) {
+                    console.log(res.message);
+                } else {
+                    window.location.replace('/my/proposal');
+                }
+            }
+        });
+    });
+
+$('.progress-btn').click(function(evt){
+  evt.preventDefault();
+
+  {% if proposal.requestor == user.key %}
+  {% if proposal.progress == proposal.confirmed_progress %}return;
+    {% else %}progress('{{ uri_for(confirm_progress, proposal_id=proposal.key.id()) }}',"Waiting for progress...");
+    {% endif %}
+  {% endif %}
+
+  {% if proposal.decider == user.key %}
+    {% if proposal.progress <= proposal.times %}
+    progress("/proposal/{{ proposal.key.id()}}/progress", "Make progress");
+    $("input[name='progress']").val("{{ proposal.progress }} / {{ proposal.times }}");
+    {% else %}return;
+    {% endif %}
+  {% endif %}
+});
+
+function progress(url, msg){
+  $.ajax({
+            type: 'POST',
+            data: null,
+            url: url,
+            success: function(res) {
+                if (res.error) {
+                    console.log(res.message);
+                } else {
+                    $(".progress-btn").text(msg);
+                }
+            }
+  }); 
+}
+
+</script>
 {% endblock %}

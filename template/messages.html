@@ -95,13 +95,9 @@ $(document).ready(function(){
 			<b>{% if message.sender == user.key %} You {% else %} {{ opposite.firstname }} {% endif %}</b> to
 			<b>{% if message.receiver == user.key %} You {% else %} {{ opposite.firstname }} {% endif %}</b>
 			</td>
-<<<<<<< HEAD
+
 			<td class="message-text" id="message-content">-${{ message.text }}</td>
-||||||| merged common ancestors
-			<td class="message-text">-${{ message.text }}</td>
-=======
-			<td class="message-text">{{ message.text }}</td>
->>>>>>> 36dcace5375988615103eb07c108dd836e43ed32
+
 		</tr>
 	{% endfor %}
 	</table>

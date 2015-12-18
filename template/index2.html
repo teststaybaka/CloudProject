@@ -18,14 +18,17 @@
     }
     .background-color{
       background-color: rgba(238,238,238,0.3);
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      overflow: auto;
     }
 </style>
-<div class = "background-color">
 <div class="jumbotron">
   <div class="container">
     <h1>Hands For You</h1>
     <p>Need help? Wish to help? Welcome to Hands For You! We help you offer or find any kind of service. You can easily post your own service or view other people service using our platform.</p>
-    <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+    <!-- <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p> -->
   </div>
 </div>
 
@@ -52,9 +55,9 @@
   <hr>
 <div class="panel panel-default">
   <!-- Default panel contents -->
-  <div class="panel-heading"><h1 class="panel-title"><i class="glyphicon glyphicon-list"></i>Recommended Service</h1></div>
+  <div class="panel-heading"><h1 class="panel-title"><i class="glyphicon glyphicon-list"></i>Recommandation</h1></div>
   <div class="panel-body">
-    <p>Here are some recommended service just for you, based on your service history </p>
+    <p>Here are some recommendation just for you, based on your service/request history </p>
   </div>
 
   <!-- Table -->
@@ -89,6 +92,5 @@
 
   <footer>
     <p>Cloud Computing Final Project, 2015/12</p>
-</div> 
 </div><!-- /container -->
 {% endblock %}

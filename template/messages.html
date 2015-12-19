@@ -75,7 +75,7 @@ $(function(){
         	var message = $("#newmessage-body").val();
 		    ws.send(message);
 		  	clicked = true;
-			appendMessage(message);
+			prependMessage(message);
 
 			$.ajax({
 	            type: 'POST',
@@ -91,12 +91,13 @@ $(function(){
 		});
     };
 	
-	ws.onmessage = function(message) {
+	ws.onmessage = function(evt) {
+		var message = evt.data;
 		console.log('Received');
-		appendMessage(message);
+		prependMessage(message);
 	};
 
-	function appendMessage(msg) {
+	function prependMessage(msg) {
 		var cell1 = "<div><div class='from'>from<b>";
 		if (clicked) 
 			cell1 += "You"
@@ -112,7 +113,9 @@ $(function(){
 		var cell3 = "<i>@" + Date(Date.now()).toString() + "</i>";
 		var cell = cell1 + cell2 + cell3;
 		console.log(cell);
-		$('#message-list').append(cell);
+		$('#message-list').prepend(cell);
+		var number = parseInt($("#message-count").text());
+		$("#message-count").text(number + 1); 
 		clicked = false;
 	}
 })	
@@ -169,9 +172,9 @@ $(function(){
     <h1 class="panel-title">Messages</h1>
   </div>
   <div class="panel-body">
-    You have <span>{{ messages|count }}</span> message{% if messages|count > 1 %}s{% endif %}.
+    You have <span id="message-count">{{ messages|count }}</span> message{% if messages|count > 1 %}s{% endif %}.
   </div>
-  
+
   <div class="messages" id="message-list">
 
     {% for message in messages %}

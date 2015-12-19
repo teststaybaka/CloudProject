@@ -140,8 +140,12 @@ $(function(){
   <!-- Table -->
  <form class="modify-proposal-form"  method="POST" action="" style="padding: 10px;">
     <table class="table">
-      <tr><td><b>Price:</b></td><td>$ <input class="form-control" type="text" name="price" value="{{ proposal.price }}"></td></tr>
-      <tr><td><b>Quantity:</b></td><td><input class="form-control" type="text" name="times" value="{{ proposal.times }}"></td></tr>
+      <tr><td><b>Price:</b></td><td>$ <input class="form-control" type="text" name="price" value="{{ proposal.price }}"
+        {% if not proposal.requestor == user.key %} readonly{% endif %}>
+      </td></tr>
+      <tr><td><b>Quantity:</b></td><td><input class="form-control" type="text" name="times" value="{{ proposal.times }}"
+      {% if not proposal.requestor == user.key %} readonly{% endif %}>
+      </td></tr>
       <tr><td><b>Type:</b></td><td><input class="form-control" type="text" name="kind" value="{{ proposal.kind }}" readonly></td></tr>
       <tr><td><b>Progress:</b></td><td><input class="form-control" style="margin-right: 5px;" type="text" name="progress" value="{{proposal.progress}} / {{ proposal.times }}" readonly> <a class="progress-btn" href="">
 
@@ -160,7 +164,8 @@ $(function(){
       </td></tr>
     </table>
 
-    <input class="btn btn-primary" type="submit" value="Save">
+    {% if proposal.requestor == user.key %}<input class="btn btn-primary" type="submit" value="Save">
+    {% endif %}
   </form>
 
 </div>

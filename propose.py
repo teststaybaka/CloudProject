@@ -192,13 +192,13 @@ class ConfirmProgress(BaseHandler):
     @login_required_json
     def post(self, proposal_id):
         proposal = ndb.Key('Proposal', int(proposal_id)).get()
-        if not proposal or proposal.status != 'accepted' or proposal.requestor != self.user_key or proposal.progress >= proposal.confirmed_progress:
+        if not proposal or (proposal.status != 'accepted' and proposal.status != 'finished') or proposal.requestor != self.user_key or proposal.progress <= proposal.confirmed_progress:
             self.json_response(True, {'message': 'Invalid request.'})
             return
 
         proposal.confirmed_progress = proposal.progress
         proposal.updated = datetime.now()
-        if proposal.progress == progress.times:
+        if proposal.progress == proposal.times:
             proposal.status = 'confirmed'
             text = 'Congratulation! Everything is done!'
             message = Message(parent=proposal.key, sender=self.user_key, receiver=proposal.decider, text=text)

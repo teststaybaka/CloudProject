@@ -1,5 +1,5 @@
 import webapp2
-import views, service, propose
+import views, service, propose, admin
 
 routes = [
     webapp2.Route(r'/', views.Home, name="home"),
@@ -27,5 +27,7 @@ routes = [
     webapp2.Route(r'/proposal/<proposal_id:\d+>/accept', propose.AcceptProposal, name="accept_proposal"),
     webapp2.Route(r'/proposal/<proposal_id:\d+>/progress', propose.Progress, name="progress"),
     webapp2.Route(r'/proposal/<proposal_id:\d+>/confirm', propose.ConfirmProgress, name="confirm_progress"),
+
+    webapp2.Route(r'/admin/reset', admin.Reset, name="reset"),
 ]
 application = webapp2.WSGIApplication(routes, debug=True)

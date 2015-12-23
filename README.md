@@ -29,14 +29,23 @@ You may need [Google Cloud SDK](https://cloud.google.com/sdk/?hl=en#windows) to 
 ### Application entrance:
 urls.py which defines the mapping from url to handlers  
 
-### Main handlers:
-views.py which handles the response. Jinja2 template engine is used to render html files.  
+### User related handlers:
+views.py contains handlers for all user related request including sign in, sign up, home page and user settings.  
+
+### Service related handlers:
+service.py contains handlers for services including creating service, modifying service, displaying service creation hsitory, searching services and service details.  
+
+### Proposal related handlers:
+propose.py includes proposal history, creating proposal, modifying proposal, sending message, accepting/declining proposal, making progress and confirmation.
 
 ### Template engine:
-[Jinja2](http://jinja.pocoo.org/docs/dev/templates/), with which base.html can be used as the base of all html files, meaning same headers/html blocks that are reused through other html files should be written in base.html. Put all template html files in /template folder.  
+[Jinja2](http://jinja.pocoo.org/docs/dev/templates/) is used to render html pages and base.html is the base of all html files, meaning same headers/html blocks that are reused through other html files should be written in base.html. Put all template html files in /template folder.  
 
 ### Model definition:
 models.py which defines the models using [NDB datastore API](https://cloud.google.com/appengine/docs/python/ndb/).  
 
 ### Static files:
 Put all static files in /static folder (except for templates) and access by "/static/*".  
+
+### Message server:
+`/Messages` contains the code deployed in Google Compute Engine which is a websocket server for real-time messaging.  
